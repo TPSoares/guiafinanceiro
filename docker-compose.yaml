@@ -1,0 +1,26 @@
+version: '3.1'
+services:
+    API:
+        build: .
+        image: 'guiafinanceiro'
+        ports:
+            - "8080:8080"
+        depends_on:
+            - db
+        environment:
+            - SPRING_DATASOURCE_URL=jdbc:mysql://db:${MYSQL_PORT}/${MYSQL_DATABASE}
+            - SPRING_DATASOURCE_USERNAME=${MYSQL_USER}
+            - SPRING_DATASOURCE_PASSWORD=${MYSQL_PASSWORD}
+            - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+    db:
+        image: mysql
+        ports:
+            - "3306:3306"
+        environment:
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - MYSQL_ALLOW_EMPTY_PASSWORD=no
+            - MYSQL_RANDOM_ROOT_PASSWORD=no
