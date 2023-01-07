@@ -51,4 +51,7 @@ public class Transaction {
 
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    @Column(name = "disabled")
+    private Boolean disabled;
 }
