@@ -37,6 +37,6 @@ public class User {
     @Column(name = "updated_at")
     private Date updatedAt;
 
-    @Column(name = "disabled")
-    private Boolean disabled;
+    @Column(name = "enabled")
+    private Boolean enabled;
 }
