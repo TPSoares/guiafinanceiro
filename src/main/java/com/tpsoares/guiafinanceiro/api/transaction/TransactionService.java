@@ -24,14 +24,7 @@ public class TransactionService {
         try {
             List<Transaction> transactionList = transactionRepository.findAll();
 
-            List<TransactionOutputDto> transactionOutputDtoList = transactionList
-                    .stream()
-                    .map(transaction -> TransactionOutputDto.transactionOutputDtoBuilder()
-                            .transactionId(transaction.getTransactionId())
-                            .name(transaction.getName())
-                            .createdAt(transaction.getCreatedAt())
-                            .build())
-                    .collect(Collectors.toList());
+            List<TransactionOutputDto> transactionOutputDtoList = TransactionMapper.toOutputDtoList(transactionList);
 
             return Result.success(transactionOutputDtoList);
 
