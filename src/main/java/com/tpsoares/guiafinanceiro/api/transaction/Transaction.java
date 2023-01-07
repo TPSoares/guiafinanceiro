@@ -46,6 +46,9 @@ public class Transaction {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "transaction_value")
+    private String transactionValue;
+
     @Column(name = "created_at")
     private Date createdAt;
 

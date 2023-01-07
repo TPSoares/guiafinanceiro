@@ -22,7 +22,7 @@ public class TransactionService {
     public Result<List<TransactionOutputDto>, ResponseError> list() {
 
         try {
-            List<Transaction> transactionList = transactionRepository.findAll();
+            List<Transaction> transactionList = transactionRepository.findByEnabled(true);
 
             List<TransactionOutputDto> transactionOutputDtoList = TransactionMapper.toOutputDtoList(transactionList);
 

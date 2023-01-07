@@ -16,15 +16,18 @@ import java.util.Objects;
 public class TransactionOutputDto implements Serializable {
     private final Long transactionId;
     private final String name;
+
+    private final String transactionValue;
     private final Date createdAt;
     private final Date updatedAt;
     private final User user;
     private final CategoryType categoryType;
     private final SubcategoryType subcategoryType;
 
-    public TransactionOutputDto(Long transactionId, String name, Date createdAt, Date updatedAt, User user, CategoryType categoryType, SubcategoryType subcategoryType) {
+    public TransactionOutputDto(Long transactionId, String name, String transactionValue, Date createdAt, Date updatedAt, User user, CategoryType categoryType, SubcategoryType subcategoryType) {
         this.transactionId = transactionId;
         this.name = name;
+        this.transactionValue = transactionValue;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.user = user;
@@ -38,6 +41,10 @@ public class TransactionOutputDto implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public String getTransactionValue() {
+        return transactionValue;
     }
 
     public Date getCreatedAt() {
@@ -67,6 +74,7 @@ public class TransactionOutputDto implements Serializable {
         TransactionOutputDto entity = (TransactionOutputDto) o;
         return Objects.equals(this.transactionId, entity.transactionId) &&
                 Objects.equals(this.name, entity.name) &&
+                Objects.equals(this.transactionValue, entity.transactionValue) &&
                 Objects.equals(this.createdAt, entity.createdAt) &&
                 Objects.equals(this.updatedAt, entity.updatedAt) &&
                 Objects.equals(this.user, entity.user) &&
@@ -76,7 +84,7 @@ public class TransactionOutputDto implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(transactionId, name, createdAt, updatedAt, user, categoryType, subcategoryType);
+        return Objects.hash(transactionId, name, transactionValue, createdAt, updatedAt, user, categoryType, subcategoryType);
     }
 
     @Override
@@ -84,6 +92,7 @@ public class TransactionOutputDto implements Serializable {
         return getClass().getSimpleName() + "(" +
                 "transactionId = " + transactionId + ", " +
                 "name = " + name + ", " +
+                "transactionValue = " + transactionValue + ", " +
                 "createdAt = " + createdAt + ", " +
                 "updatedAt = " + updatedAt + ")" +
                 "user = " + user + ", " +

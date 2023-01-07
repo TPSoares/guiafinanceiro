@@ -1,6 +1,7 @@
 CREATE TABLE `t_transaction` (
   `transaction_id` bigint PRIMARY KEY,
   `name` varchar(255),
+  `transaction_value` decimal (6,2),
   `category_type_id` bigint,
   `user_id` bigint,
   `subcategory_type_id` bigint,
@@ -72,3 +73,8 @@ INSERT INTO `t_subcategory_type` (`subcategory_type_id`, `name`, `description`, 
 INSERT INTO `t_subcategory_type` (`subcategory_type_id`, `name`, `description`, `created_at`, `updated_at`, `enabled`) VALUES (101, "SALARIO", "Salário", now(), now(), 1);
 INSERT INTO `t_subcategory_type` (`subcategory_type_id`, `name`, `description`, `created_at`, `updated_at`, `enabled`) VALUES (102, "DIVIDENDOS", "Proventos (Dividendos)", now(), now(), 1);
 INSERT INTO `t_subcategory_type` (`subcategory_type_id`, `name`, `description`, `created_at`, `updated_at`, `enabled`) VALUES (999, "OUTRASRENDAS", "Outras Rendas", now(), now(), 1);
+
+INSERT INTO `t_user` (`user_id`, `name`, `email`, `password`, `created_at`, `updated_at`, `enabled`) VALUES (1, "thiago", "thiagopina.soares@gmail.com", "dota", now(), now(), 1);
+
+INSERT INTO `t_transaction` (`transaction_id`, `name`, `transaction_value`, `category_type_id`, `user_id`, `subcategory_type_id`, `created_at`, `updated_at`, `enabled`) VALUES (1, "conta de luz", "150.47", 2, 1, 2, now(), now(), 1);
+INSERT INTO `t_transaction` (`transaction_id`, `name`, `transaction_value`, `category_type_id`, `user_id`, `subcategory_type_id`, `created_at`, `updated_at`, `enabled`) VALUES (2, "aluguel", "50.8", 2, 1, 2, now(), now(), 1);

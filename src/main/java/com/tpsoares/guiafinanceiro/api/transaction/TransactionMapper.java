@@ -14,6 +14,7 @@ public class TransactionMapper {
                 .map(transaction -> TransactionOutputDto.builder()
                         .transactionId(transaction.getTransactionId())
                         .name(transaction.getName())
+                        .transactionValue(transaction.getTransactionValue())
                         .createdAt(transaction.getCreatedAt())
                         .updatedAt(transaction.getUpdatedAt())
                         .user(transaction.getUser())
