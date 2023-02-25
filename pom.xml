@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.tpsoares</groupId>
-	<artifactId>guiafinanceiro</artifactId>
+	<artifactId>guiafinanceiro-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>guiafinanceiro</name>
 	<description>Demo project for Spring Boot</description>
