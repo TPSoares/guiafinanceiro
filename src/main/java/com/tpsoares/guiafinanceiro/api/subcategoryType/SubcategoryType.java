@@ -1,5 +1,6 @@
 package com.tpsoares.guiafinanceiro.api.subcategoryType;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "t_subcategory_type")
 public class SubcategoryType {
     @Id

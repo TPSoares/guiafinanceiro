@@ -8,5 +8,6 @@ import java.util.List;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
+    Transaction findByTransactionIdAndEnabled(Long id, Boolean enabled);
     List<Transaction> findByEnabled(Boolean enabled);
 }

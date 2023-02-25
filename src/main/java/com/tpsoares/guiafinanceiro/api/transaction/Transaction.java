@@ -1,5 +1,6 @@
 package com.tpsoares.guiafinanceiro.api.transaction;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.tpsoares.guiafinanceiro.api.categoryType.CategoryType;
 import com.tpsoares.guiafinanceiro.api.subcategoryType.SubcategoryType;
 import com.tpsoares.guiafinanceiro.api.user.User;
@@ -24,6 +25,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "t_transaction")
 public class Transaction {
     @Id
