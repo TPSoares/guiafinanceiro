@@ -2,13 +2,18 @@ package com.tpsoares.guiafinanceiro.api.transaction;
 
 import com.tpsoares.guiafinanceiro.api.categoryType.CategoryTypeMapper;
 import com.tpsoares.guiafinanceiro.api.subcategoryType.SubcategoryTypeMapper;
+import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionInputDto;
 import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionOutputDto;
 import com.tpsoares.guiafinanceiro.api.user.UserMapper;
 
+import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TransactionMapper {
+
+    private TransactionMapper() {
+
+    }
 
     public static List<TransactionOutputDto> toOutputDtoList(List<Transaction> transactionList) {
         return transactionList
@@ -35,6 +40,22 @@ public class TransactionMapper {
                 .updatedAt(transaction.getUpdatedAt())
                 .categoryType(transaction.getCategoryType())
                 .subcategoryType(transaction.getSubcategoryType())
+                .user(transaction.getUser())
+                .build();
+    }
+
+    public static Transaction toEntity(Long transactionId, TransactionInputDto transactionInputDto) {
+        return Transaction.builder()
+                .transactionId(transactionId)
+                .name(transactionInputDto.getName())
+                .transactionDate(transactionInputDto.getTransactionDate())
+                .transactionValue(transactionInputDto.getTransactionValue())
+                .categoryType(transactionInputDto.getCategoryType())
+                .subcategoryType(transactionInputDto.getSubcategoryType())
+                .user(transactionInputDto.getUser())
+                .enabled(true)
+                .createdAt(new Date())
+                .updatedAt(new Date())
                 .build();
     }
 }

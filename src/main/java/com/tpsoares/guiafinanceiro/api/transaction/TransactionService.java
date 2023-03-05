@@ -1,5 +1,6 @@
 package com.tpsoares.guiafinanceiro.api.transaction;
 
+import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionInputDto;
 import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionOutputDto;
 import com.tpsoares.guiafinanceiro.core.Result;
 import com.tpsoares.guiafinanceiro.utils.ResponseError;
@@ -69,6 +70,46 @@ public class TransactionService {
             }
 
             return Result.success(transaction);
+
+        } catch (Exception e) {
+            return Result.error(ResponseError.builder()
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .code("500000")
+                    .errorMessage("Internal server error.")
+                    .build());
+        }
+    }
+
+    public Result<TransactionOutputDto, ResponseError> create(TransactionInputDto transactionInputDto) {
+
+        try {
+
+            Transaction transaction = TransactionMapper.toEntity(null, transactionInputDto);
+
+            transactionRepository.save(transaction);
+
+            TransactionOutputDto transactionOutputDto = TransactionMapper.toOutputDto(transaction);
+            return Result.success(transactionOutputDto);
+
+        } catch (Exception e) {
+            return Result.error(ResponseError.builder()
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .code("500000")
+                    .errorMessage("Internal server error.")
+                    .build());
+        }
+    }
+
+    public Result<TransactionOutputDto, ResponseError> update(Long transactionId, TransactionInputDto transactionInputDto) {
+
+        try {
+
+            Transaction transaction = TransactionMapper.toEntity(transactionId, transactionInputDto);
+
+            transactionRepository.save(transaction);
+
+            TransactionOutputDto transactionOutputDto = TransactionMapper.toOutputDto(transaction);
+            return Result.success(transactionOutputDto);
 
         } catch (Exception e) {
             return Result.error(ResponseError.builder()

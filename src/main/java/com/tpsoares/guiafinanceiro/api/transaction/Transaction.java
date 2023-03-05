@@ -51,6 +51,9 @@ public class Transaction {
     @Column(name = "transaction_value")
     private String transactionValue;
 
+    @Column(name = "transaction_date")
+    private Date transactionDate;
+
     @Column(name = "created_at")
     private Date createdAt;
 

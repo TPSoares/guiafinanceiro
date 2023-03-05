@@ -1,7 +1,8 @@
 CREATE TABLE `t_transaction` (
-  `transaction_id` bigint PRIMARY KEY,
+  `transaction_id` bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `name` varchar(255),
   `transaction_value` decimal (6,2),
+  `transaction_date` datetime,
   `category_type_id` bigint,
   `user_id` bigint,
   `subcategory_type_id` bigint,
@@ -11,7 +12,7 @@ CREATE TABLE `t_transaction` (
 );
 
 CREATE TABLE `t_category_type` (
-  `category_type_id` bigint PRIMARY KEY,
+  `category_type_id` bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `name` varchar(255),
   `description` varchar(255),
   `created_at` datetime,
@@ -20,7 +21,7 @@ CREATE TABLE `t_category_type` (
 );
 
 CREATE TABLE `t_subcategory_type` (
-  `subcategory_type_id` bigint PRIMARY KEY,
+  `subcategory_type_id` bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `name` varchar(255),
   `description` varchar(255),
   `created_at` datetime,
@@ -29,7 +30,7 @@ CREATE TABLE `t_subcategory_type` (
 );
 
 CREATE TABLE `t_user` (
-  `user_id` bigint PRIMARY KEY,
+  `user_id` bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `name` varchar(255),
   `email` varchar(255),
   `password` varchar(255),
