@@ -51,4 +51,11 @@ public class TransactionController {
                 .map(transactionOutputDto -> serviceResponseUtils.responseEntitySuccess(transactionOutputDto, HttpStatus.OK))
                 .orElse(serviceResponseUtils::responseEntityError);
     }
+
+    @GetMapping("/monthly")
+    public ResponseEntity<Object> findTransactionTotalByMonth() {
+        return transactionService.findTransactionTotalByMonth()
+                .map(transactionOutputDto -> serviceResponseUtils.responseEntitySuccess(transactionOutputDto, HttpStatus.OK))
+                .orElse(serviceResponseUtils::responseEntityError);
+    }
 }

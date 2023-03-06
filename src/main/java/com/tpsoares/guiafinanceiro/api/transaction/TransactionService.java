@@ -1,5 +1,6 @@
 package com.tpsoares.guiafinanceiro.api.transaction;
 
+import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionByMonthDto;
 import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionInputDto;
 import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionOutputDto;
 import com.tpsoares.guiafinanceiro.core.Result;
@@ -110,6 +111,25 @@ public class TransactionService {
 
             TransactionOutputDto transactionOutputDto = TransactionMapper.toOutputDto(transaction);
             return Result.success(transactionOutputDto);
+
+        } catch (Exception e) {
+            return Result.error(ResponseError.builder()
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .code("500000")
+                    .errorMessage("Internal server error.")
+                    .build());
+        }
+    }
+
+    public Result<List<TransactionByMonthDto>, ResponseError> findTransactionTotalByMonth() {
+
+        try {
+
+            List<Object[]> result = transactionRepository.findTransactionTotalByMonth();
+
+            List<TransactionByMonthDto> transactionByMonthDtoList = TransactionMapper.toTransactionByMonthDto(result);
+
+            return Result.success(transactionByMonthDtoList);
 
         } catch (Exception e) {
             return Result.error(ResponseError.builder()
