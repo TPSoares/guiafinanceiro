@@ -52,9 +52,9 @@ public class TransactionMapper {
                 .name(transactionInputDto.getName())
                 .transactionDate(transactionInputDto.getTransactionDate())
                 .transactionValue(transactionInputDto.getTransactionValue())
-                .categoryType(transactionInputDto.getCategoryType())
-                .subcategoryType(transactionInputDto.getSubcategoryType())
-                .user(transactionInputDto.getUser())
+//                .categoryType(transactionInputDto.getCategoryType())
+//                .subcategoryType(transactionInputDto.getSubcategoryType())
+//                .user(transactionInputDto.getUser())
                 .enabled(true)
                 .createdAt(new Date())
                 .updatedAt(new Date())
@@ -70,5 +70,15 @@ public class TransactionMapper {
                     .monthDate(transaction[2].toString())
                     .build())
                 .toList();
+    }
+
+    public static Transaction.TransactionBuilder inputMap(TransactionInputDto transactionInputDto) {
+        return Transaction.builder()
+                .name(transactionInputDto.getName())
+                .transactionDate(transactionInputDto.getTransactionDate())
+                .transactionValue(transactionInputDto.getTransactionValue())
+                .enabled(true)
+                .createdAt(new Date())
+                .updatedAt(new Date());
     }
 }

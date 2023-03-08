@@ -18,9 +18,9 @@ public class TransactionInputDto {
     private final Date transactionDate;
     private final Date createdAt;
     private final Date updatedAt;
-    private final User user;
-    private final CategoryType categoryType;
-    private final SubcategoryType subcategoryType;
+    private final Long userId;
+    private final Long categoryTypeId;
+    private final Long subcategoryTypeId;
 
     public String getName() {
         return name;
@@ -42,16 +42,16 @@ public class TransactionInputDto {
         return updatedAt;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public CategoryType getCategoryType() {
-        return categoryType;
+    public Long getCategoryTypeId() {
+        return categoryTypeId;
     }
 
-    public SubcategoryType getSubcategoryType() {
-        return subcategoryType;
+    public Long getSubcategoryTypeId() {
+        return subcategoryTypeId;
     }
 
     @Override
@@ -64,14 +64,14 @@ public class TransactionInputDto {
                 Objects.equals(this.transactionDate, entity.transactionDate) &&
                 Objects.equals(this.createdAt, entity.createdAt) &&
                 Objects.equals(this.updatedAt, entity.updatedAt) &&
-                Objects.equals(this.user, entity.user) &&
-                Objects.equals(this.categoryType, entity.categoryType) &&
-                Objects.equals(this.subcategoryType, entity.subcategoryType);
+                Objects.equals(this.userId, entity.userId) &&
+                Objects.equals(this.categoryTypeId, entity.categoryTypeId) &&
+                Objects.equals(this.subcategoryTypeId, entity.subcategoryTypeId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, transactionValue, transactionDate, createdAt, updatedAt, user, categoryType, subcategoryType);
+        return Objects.hash(name, transactionValue, transactionDate, createdAt, updatedAt, userId, categoryTypeId, subcategoryTypeId);
     }
 
     @Override
@@ -82,8 +82,8 @@ public class TransactionInputDto {
                 "transactionDate = " + transactionDate + ", " +
                 "createdAt = " + createdAt + ", " +
                 "updatedAt = " + updatedAt + ")" +
-                "user = " + user + ", " +
-                "categoryType = " + categoryType + ", " +
-                "subcategoryType = " + subcategoryType + ")";
+                "userId = " + userId + ", " +
+                "categoryTypeId = " + categoryTypeId + ", " +
+                "subcategoryTypeId = " + subcategoryTypeId + ")";
     }
 }

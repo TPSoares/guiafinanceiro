@@ -1,14 +1,21 @@
 package com.tpsoares.guiafinanceiro.api.transaction;
 
+import com.tpsoares.guiafinanceiro.api.categoryType.CategoryType;
+import com.tpsoares.guiafinanceiro.api.categoryType.CategoryTypeRepository;
+import com.tpsoares.guiafinanceiro.api.subcategoryType.SubcategoryType;
+import com.tpsoares.guiafinanceiro.api.subcategoryType.SubcategoryTypeRepository;
 import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionByMonthDto;
 import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionInputDto;
 import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionOutputDto;
+import com.tpsoares.guiafinanceiro.api.user.User;
+import com.tpsoares.guiafinanceiro.api.user.UserRepository;
 import com.tpsoares.guiafinanceiro.core.Result;
 import com.tpsoares.guiafinanceiro.utils.ResponseError;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TransactionService {
@@ -16,9 +23,15 @@ public class TransactionService {
     private static final Boolean TRANSACTION_ENABLED = true;
 
     private final TransactionRepository transactionRepository;
+    private final UserRepository userRepository;
+    private final CategoryTypeRepository categoryTypeRepository;
+    private final SubcategoryTypeRepository subcategoryTypeRepository;
 
-    public TransactionService(TransactionRepository transactionRepository) {
+    public TransactionService(TransactionRepository transactionRepository, UserRepository userRepository, CategoryTypeRepository categoryTypeRepository, SubcategoryTypeRepository subcategoryTypeRepository) {
         this.transactionRepository = transactionRepository;
+        this.userRepository = userRepository;
+        this.categoryTypeRepository = categoryTypeRepository;
+        this.subcategoryTypeRepository = subcategoryTypeRepository;
     }
 
     public Result<List<TransactionOutputDto>, ResponseError> list() {
@@ -85,12 +98,12 @@ public class TransactionService {
 
         try {
 
-            Transaction transaction = TransactionMapper.toEntity(null, transactionInputDto);
+            return checkInputDtoAndReturnBuilder(transactionInputDto)
+                    .flatMap(transactionBuilder -> getUser(transactionBuilder, transactionInputDto))
+                    .flatMap(transactionBuilder -> getCategoryType(transactionBuilder, transactionInputDto))
+                    .flatMap(transactionBuilder -> getSubCategoryType(transactionBuilder, transactionInputDto))
+                    .flatMap(this::saveTransaction);
 
-            transactionRepository.save(transaction);
-
-            TransactionOutputDto transactionOutputDto = TransactionMapper.toOutputDto(transaction);
-            return Result.success(transactionOutputDto);
 
         } catch (Exception e) {
             return Result.error(ResponseError.builder()
@@ -111,6 +124,107 @@ public class TransactionService {
 
             TransactionOutputDto transactionOutputDto = TransactionMapper.toOutputDto(transaction);
             return Result.success(transactionOutputDto);
+
+        } catch (Exception e) {
+            return Result.error(ResponseError.builder()
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .code("500000")
+                    .errorMessage("Internal server error.")
+                    .build());
+        }
+    }
+
+    private Result<TransactionOutputDto, ResponseError> saveTransaction(Transaction.TransactionBuilder transactionBuilder) {
+
+        try {
+            return Result.success(TransactionMapper.toOutputDto(transactionRepository.save(transactionBuilder.build())));
+        } catch (Exception e) {
+            return Result.error(ResponseError.builder()
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .code("500000")
+                    .errorMessage("Internal server error.")
+                    .build());
+        }
+    }
+
+    private Result<Transaction.TransactionBuilder, ResponseError> checkInputDtoAndReturnBuilder(TransactionInputDto transactionInputDto) {
+
+        if (transactionInputDto == null) {
+            return Result.error(ResponseError.builder()
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .code("500000")
+                    .errorMessage("Internal server error.")
+                    .build());
+        }
+
+        return Result.success(TransactionMapper.inputMap(transactionInputDto));
+    }
+
+    private Result<Transaction.TransactionBuilder, ResponseError> getUser(Transaction.TransactionBuilder transactionBuilder, TransactionInputDto transactionInputDto) {
+        try {
+            User user = null;
+
+            if (transactionInputDto.getUserId() != null) {
+                Optional<User> userOptional = userRepository.findById(transactionInputDto.getUserId());
+
+                if (userOptional.isPresent()) {
+                    user = userOptional.get();
+                }
+            }
+
+            transactionBuilder.user(user);
+
+            return Result.success(transactionBuilder);
+
+        } catch (Exception e) {
+            return Result.error(ResponseError.builder()
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .code("500000")
+                    .errorMessage("Internal server error.")
+                    .build());
+        }
+    }
+
+    private Result<Transaction.TransactionBuilder, ResponseError> getCategoryType(Transaction.TransactionBuilder transactionBuilder, TransactionInputDto transactionInputDto) {
+        try {
+            CategoryType categoryType = null;
+
+            if (transactionInputDto.getCategoryTypeId() != null) {
+                Optional<CategoryType> categoryTypeOptional = categoryTypeRepository.findById(transactionInputDto.getCategoryTypeId());
+
+                if (categoryTypeOptional.isPresent()) {
+                    categoryType = categoryTypeOptional.get();
+                }
+            }
+
+            transactionBuilder.categoryType(categoryType);
+
+            return Result.success(transactionBuilder);
+
+        } catch (Exception e) {
+            return Result.error(ResponseError.builder()
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .code("500000")
+                    .errorMessage("Internal server error.")
+                    .build());
+        }
+    }
+
+    private Result<Transaction.TransactionBuilder, ResponseError> getSubCategoryType(Transaction.TransactionBuilder transactionBuilder, TransactionInputDto transactionInputDto) {
+        try {
+            SubcategoryType subcategoryType = null;
+
+            if (transactionInputDto.getSubcategoryTypeId() != null) {
+                Optional<SubcategoryType> subcategoryTypeOptional = subcategoryTypeRepository.findById(transactionInputDto.getSubcategoryTypeId());
+
+                if (subcategoryTypeOptional.isPresent()) {
+                    subcategoryType = subcategoryTypeOptional.get();
+                }
+            }
+
+            transactionBuilder.subcategoryType(subcategoryType);
+
+            return Result.success(transactionBuilder);
 
         } catch (Exception e) {
             return Result.error(ResponseError.builder()
