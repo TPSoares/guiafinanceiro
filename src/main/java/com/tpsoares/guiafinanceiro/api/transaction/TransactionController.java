@@ -58,4 +58,11 @@ public class TransactionController {
                 .map(transactionOutputDto -> serviceResponseUtils.responseEntitySuccess(transactionOutputDto, HttpStatus.OK))
                 .orElse(serviceResponseUtils::responseEntityError);
     }
+
+    @GetMapping("/monthly-by-subcategory")
+    public ResponseEntity<Object> findTransactionMonthlyBySubCategory() {
+        return transactionService.findTransactionMonthlyBySubCategory()
+                .map(transactionOutputDto -> serviceResponseUtils.responseEntitySuccess(transactionOutputDto, HttpStatus.OK))
+                .orElse(serviceResponseUtils::responseEntityError);
+    }
 }

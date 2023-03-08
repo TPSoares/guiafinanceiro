@@ -4,6 +4,7 @@ import com.tpsoares.guiafinanceiro.api.categoryType.CategoryTypeMapper;
 import com.tpsoares.guiafinanceiro.api.subcategoryType.SubcategoryTypeMapper;
 import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionByMonthDto;
 import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionInputDto;
+import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionMonthlyBySubCategoryTypeDto;
 import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionOutputDto;
 import com.tpsoares.guiafinanceiro.api.user.UserMapper;
 
@@ -69,6 +70,16 @@ public class TransactionMapper {
                     .monthlyIncome(transaction[1].toString())
                     .monthDate(transaction[2].toString())
                     .build())
+                .toList();
+    }
+
+    public static List<TransactionMonthlyBySubCategoryTypeDto> toTransactionMonthlyBySubCategoryTypeDto(List<Object[]> result) {
+        return result
+                .stream()
+                .map(transaction -> TransactionMonthlyBySubCategoryTypeDto.builder()
+                        .monthlyExpense(transaction[0].toString())
+                        .subcategoryType(transaction[1].toString())
+                        .build())
                 .toList();
     }
 

@@ -8,6 +8,7 @@ import com.tpsoares.guiafinanceiro.api.subcategoryType.SubcategoryType;
 import com.tpsoares.guiafinanceiro.api.subcategoryType.SubcategoryTypeRepository;
 import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionByMonthDto;
 import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionInputDto;
+import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionMonthlyBySubCategoryTypeDto;
 import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionOutputDto;
 import com.tpsoares.guiafinanceiro.api.user.User;
 import com.tpsoares.guiafinanceiro.api.user.UserRepository;
@@ -292,6 +293,24 @@ public class TransactionService {
             List<TransactionByMonthDto> transactionByMonthDtoList = TransactionMapper.toTransactionByMonthDto(result);
 
             return Result.success(transactionByMonthDtoList);
+
+        } catch (Exception e) {
+            return Result.error(ResponseError.builder()
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .code(ErrorCodes.INTERNAL_SERVER_ERROR.getValue())
+                    .errorMessage(ErrorMessages.INTERNAL_SERVER_ERROR.getValue())
+                    .build());
+        }
+    }
+
+    public Result<List<TransactionMonthlyBySubCategoryTypeDto>, ResponseError> findTransactionMonthlyBySubCategory() {
+        try {
+
+            List<Object[]> result = transactionRepository.findMonthlyExpensesBySubCategoryType();
+
+            List<TransactionMonthlyBySubCategoryTypeDto> transactionMonthlyBySubCategoryTypeDtoList = TransactionMapper.toTransactionMonthlyBySubCategoryTypeDto(result);
+
+            return Result.success(transactionMonthlyBySubCategoryTypeDtoList);
 
         } catch (Exception e) {
             return Result.error(ResponseError.builder()
