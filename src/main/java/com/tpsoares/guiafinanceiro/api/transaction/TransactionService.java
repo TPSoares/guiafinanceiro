@@ -2,6 +2,8 @@ package com.tpsoares.guiafinanceiro.api.transaction;
 
 import com.tpsoares.guiafinanceiro.api.categoryType.CategoryType;
 import com.tpsoares.guiafinanceiro.api.categoryType.CategoryTypeRepository;
+import com.tpsoares.guiafinanceiro.api.enums.ErrorCodes;
+import com.tpsoares.guiafinanceiro.api.enums.ErrorMessages;
 import com.tpsoares.guiafinanceiro.api.subcategoryType.SubcategoryType;
 import com.tpsoares.guiafinanceiro.api.subcategoryType.SubcategoryTypeRepository;
 import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionByMonthDto;
@@ -46,7 +48,7 @@ public class TransactionService {
         } catch (Exception e) {
             return Result.error(ResponseError.builder()
                             .httpStatus(HttpStatus.BAD_REQUEST)
-                            .code("400001")
+                            .code(ErrorCodes.INTERNAL_SERVER_ERROR.getValue())
                             .build());
         }
     }
@@ -60,8 +62,8 @@ public class TransactionService {
         } catch (Exception e) {
             return Result.error(ResponseError.builder()
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .code("500000")
-                    .errorMessage("Internal server error.")
+                    .code(ErrorCodes.INTERNAL_SERVER_ERROR.getValue())
+                    .errorMessage(ErrorMessages.INTERNAL_SERVER_ERROR.getValue())
                     .build());
         }
     }
@@ -77,9 +79,9 @@ public class TransactionService {
 
             if (transaction == null) {
                 return Result.error(ResponseError.builder()
-                        .httpStatus(HttpStatus.BAD_REQUEST)
-                        .code("400002")
-                        .errorMessage("Transaction not found.")
+                        .httpStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+                        .code(ErrorCodes.TRANSACTION_NOT_FOUND.getValue())
+                        .errorMessage(ErrorMessages.TRANSACTION_NOT_FOUND.getValue())
                         .build());
             }
 
@@ -88,8 +90,8 @@ public class TransactionService {
         } catch (Exception e) {
             return Result.error(ResponseError.builder()
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .code("500000")
-                    .errorMessage("Internal server error.")
+                    .code(ErrorCodes.INTERNAL_SERVER_ERROR.getValue())
+                    .errorMessage(ErrorMessages.INTERNAL_SERVER_ERROR.getValue())
                     .build());
         }
     }
@@ -108,8 +110,8 @@ public class TransactionService {
         } catch (Exception e) {
             return Result.error(ResponseError.builder()
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .code("500000")
-                    .errorMessage("Internal server error.")
+                    .code(ErrorCodes.INTERNAL_SERVER_ERROR.getValue())
+                    .errorMessage(ErrorMessages.INTERNAL_SERVER_ERROR.getValue())
                     .build());
         }
     }
@@ -118,18 +120,18 @@ public class TransactionService {
 
         try {
 
-            Transaction transaction = TransactionMapper.toEntity(transactionId, transactionInputDto);
-
-            transactionRepository.save(transaction);
-
-            TransactionOutputDto transactionOutputDto = TransactionMapper.toOutputDto(transaction);
-            return Result.success(transactionOutputDto);
+            return checkInputDtoAndReturnBuilder(transactionInputDto)
+                    .flatMap(transactionBuilder -> getTransaction(transactionBuilder, transactionId))
+                    .flatMap(transactionBuilder -> getUser(transactionBuilder, transactionInputDto))
+                    .flatMap(transactionBuilder -> getCategoryType(transactionBuilder, transactionInputDto))
+                    .flatMap(transactionBuilder -> getSubCategoryType(transactionBuilder, transactionInputDto))
+                    .flatMap(this::saveTransaction);
 
         } catch (Exception e) {
             return Result.error(ResponseError.builder()
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .code("500000")
-                    .errorMessage("Internal server error.")
+                    .code(ErrorCodes.INTERNAL_SERVER_ERROR.getValue())
+                    .errorMessage(ErrorMessages.INTERNAL_SERVER_ERROR.getValue())
                     .build());
         }
     }
@@ -141,8 +143,8 @@ public class TransactionService {
         } catch (Exception e) {
             return Result.error(ResponseError.builder()
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .code("500000")
-                    .errorMessage("Internal server error.")
+                    .code(ErrorCodes.INTERNAL_SERVER_ERROR.getValue())
+                    .errorMessage(ErrorMessages.INTERNAL_SERVER_ERROR.getValue())
                     .build());
         }
     }
@@ -151,13 +153,41 @@ public class TransactionService {
 
         if (transactionInputDto == null) {
             return Result.error(ResponseError.builder()
-                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .code("500000")
-                    .errorMessage("Internal server error.")
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .code(ErrorCodes.INVALID_FIELD.getValue())
+                    .errorMessage(ErrorMessages.INVALID_FIELD.getValue())
                     .build());
         }
 
         return Result.success(TransactionMapper.inputMap(transactionInputDto));
+    }
+
+    private Result<Transaction.TransactionBuilder, ResponseError> getTransaction(Transaction.TransactionBuilder transactionBuilder, Long transactionId) {
+        try {
+
+            if (transactionId != null) {
+                Optional<Transaction> transactionOptional = transactionRepository.findById(transactionId);
+
+                if (transactionOptional.isEmpty()) {
+                    return Result.error(ResponseError.builder()
+                            .httpStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+                            .code(ErrorCodes.TRANSACTION_NOT_FOUND.getValue())
+                            .errorMessage(ErrorMessages.TRANSACTION_NOT_FOUND.getValue())
+                            .build());
+                }
+            }
+
+            transactionBuilder.transactionId(transactionId);
+
+            return Result.success(transactionBuilder);
+
+        } catch (Exception e) {
+            return Result.error(ResponseError.builder()
+                    .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .code(ErrorCodes.INTERNAL_SERVER_ERROR.getValue())
+                    .errorMessage(ErrorMessages.INTERNAL_SERVER_ERROR.getValue())
+                    .build());
+        }
     }
 
     private Result<Transaction.TransactionBuilder, ResponseError> getUser(Transaction.TransactionBuilder transactionBuilder, TransactionInputDto transactionInputDto) {
@@ -169,6 +199,12 @@ public class TransactionService {
 
                 if (userOptional.isPresent()) {
                     user = userOptional.get();
+                } else {
+                    return Result.error(ResponseError.builder()
+                            .httpStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+                            .code(ErrorCodes.USER_NOT_FOUND.getValue())
+                            .errorMessage(ErrorMessages.USER_NOT_FOUND.getValue())
+                            .build());
                 }
             }
 
@@ -179,8 +215,8 @@ public class TransactionService {
         } catch (Exception e) {
             return Result.error(ResponseError.builder()
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .code("500000")
-                    .errorMessage("Internal server error.")
+                    .code(ErrorCodes.INTERNAL_SERVER_ERROR.getValue())
+                    .errorMessage(ErrorMessages.INTERNAL_SERVER_ERROR.getValue())
                     .build());
         }
     }
@@ -194,6 +230,12 @@ public class TransactionService {
 
                 if (categoryTypeOptional.isPresent()) {
                     categoryType = categoryTypeOptional.get();
+                } else {
+                    return Result.error(ResponseError.builder()
+                            .httpStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+                            .code(ErrorCodes.CATEGORY_TYPE_NOT_FOUND.getValue())
+                            .errorMessage(ErrorMessages.CATEGORY_TYPE_NOT_FOUND.getValue())
+                            .build());
                 }
             }
 
@@ -204,8 +246,8 @@ public class TransactionService {
         } catch (Exception e) {
             return Result.error(ResponseError.builder()
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .code("500000")
-                    .errorMessage("Internal server error.")
+                    .code(ErrorCodes.INTERNAL_SERVER_ERROR.getValue())
+                    .errorMessage(ErrorMessages.INTERNAL_SERVER_ERROR.getValue())
                     .build());
         }
     }
@@ -219,6 +261,12 @@ public class TransactionService {
 
                 if (subcategoryTypeOptional.isPresent()) {
                     subcategoryType = subcategoryTypeOptional.get();
+                } else {
+                    return Result.error(ResponseError.builder()
+                            .httpStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+                            .code(ErrorCodes.SUBCATEGORY_TYPE_NOT_FOUND.getValue())
+                            .errorMessage(ErrorMessages.SUBCATEGORY_TYPE_NOT_FOUND.getValue())
+                            .build());
                 }
             }
 
@@ -229,8 +277,8 @@ public class TransactionService {
         } catch (Exception e) {
             return Result.error(ResponseError.builder()
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .code("500000")
-                    .errorMessage("Internal server error.")
+                    .code(ErrorCodes.INTERNAL_SERVER_ERROR.getValue())
+                    .errorMessage(ErrorMessages.INTERNAL_SERVER_ERROR.getValue())
                     .build());
         }
     }
@@ -248,8 +296,8 @@ public class TransactionService {
         } catch (Exception e) {
             return Result.error(ResponseError.builder()
                     .httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .code("500000")
-                    .errorMessage("Internal server error.")
+                    .code(ErrorCodes.INTERNAL_SERVER_ERROR.getValue())
+                    .errorMessage(ErrorMessages.INTERNAL_SERVER_ERROR.getValue())
                     .build());
         }
     }
