@@ -1,6 +1,9 @@
 package com.tpsoares.guiafinanceiro.api.transaction;
 
+import com.tpsoares.guiafinanceiro.api.categoryType.CategoryTypeService;
+import com.tpsoares.guiafinanceiro.api.subcategoryType.SubcategoryTypeService;
 import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionInputDto;
+import com.tpsoares.guiafinanceiro.api.user.UserService;
 import com.tpsoares.guiafinanceiro.utils.ServiceResponseUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +20,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class TransactionController {
 
     private final TransactionService transactionService;
+    private final UserService userService;
+    private final CategoryTypeService categoryTypeService;
+    private final SubcategoryTypeService subcategoryTypeService;
     private final ServiceResponseUtils serviceResponseUtils;
 
-    public TransactionController(TransactionService transactionService, ServiceResponseUtils serviceResponseUtils) {
+    public TransactionController(TransactionService transactionService, UserService userService, CategoryTypeService categoryTypeService, SubcategoryTypeService subcategoryTypeService, ServiceResponseUtils serviceResponseUtils) {
         this.transactionService = transactionService;
+        this.userService = userService;
+        this.categoryTypeService = categoryTypeService;
+        this.subcategoryTypeService = subcategoryTypeService;
         this.serviceResponseUtils = serviceResponseUtils;
     }
 
@@ -40,14 +49,23 @@ public class TransactionController {
 
     @PostMapping()
     public ResponseEntity<Object> create(@RequestBody TransactionInputDto transactionInputDto) {
-        return transactionService.create(transactionInputDto)
+        return transactionService.checkInputDtoAndReturnBuilder(transactionInputDto)
+                .flatMap(transactionBuilder -> userService.getUser(transactionBuilder, transactionInputDto))
+                .flatMap(transactionBuilder -> categoryTypeService.getCategoryType(transactionBuilder, transactionInputDto))
+                .flatMap(transactionBuilder -> subcategoryTypeService.getSubCategoryType(transactionBuilder, transactionInputDto))
+                .flatMap(transactionService::saveTransaction)
                 .map(transactionOutputDto -> serviceResponseUtils.responseEntitySuccess(transactionOutputDto, HttpStatus.OK))
                 .orElse(serviceResponseUtils::responseEntityError);
     }
 
     @PutMapping("/{transactionId}")
     public ResponseEntity<Object> update(@PathVariable Long transactionId, @RequestBody TransactionInputDto transactionInputDto) {
-        return transactionService.update(transactionId, transactionInputDto)
+        return transactionService.checkInputDtoAndReturnBuilder(transactionInputDto)
+                .flatMap(transactionBuilder -> transactionService.getTransaction(transactionBuilder, transactionId))
+                .flatMap(transactionBuilder -> userService.getUser(transactionBuilder, transactionInputDto))
+                .flatMap(transactionBuilder -> categoryTypeService.getCategoryType(transactionBuilder, transactionInputDto))
+                .flatMap(transactionBuilder -> subcategoryTypeService.getSubCategoryType(transactionBuilder, transactionInputDto))
+                .flatMap(transactionService::saveTransaction)
                 .map(transactionOutputDto -> serviceResponseUtils.responseEntitySuccess(transactionOutputDto, HttpStatus.OK))
                 .orElse(serviceResponseUtils::responseEntityError);
     }
