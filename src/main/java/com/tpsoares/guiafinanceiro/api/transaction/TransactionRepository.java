@@ -34,6 +34,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
                     "FROM t_transaction tt  " +
                     "LEFT JOIN t_subcategory_type tst ON tt.subcategory_type_id = tst.subcategory_type_id " +
                     "WHERE tt.transaction_date  > (DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) " +
+                    "AND tt.category_type_id = 2 " +
                     "GROUP BY tst.description",
             nativeQuery = true
     )

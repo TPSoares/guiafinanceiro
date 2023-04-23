@@ -1,5 +1,6 @@
 package com.tpsoares.guiafinanceiro.api.categoryType;
 
+import com.tpsoares.guiafinanceiro.api.categoryType.dto.CategoryTypeOutputDto;
 import com.tpsoares.guiafinanceiro.api.enums.ErrorCodes;
 import com.tpsoares.guiafinanceiro.api.enums.ErrorMessages;
 import com.tpsoares.guiafinanceiro.api.exceptions.CategoryTypeNotFoundException;
@@ -10,6 +11,7 @@ import com.tpsoares.guiafinanceiro.utils.ResponseError;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,4 +46,12 @@ public class CategoryTypeService {
         }
     }
 
+    public Result<List<CategoryTypeOutputDto>, Exception> list() {
+
+        try {
+            return Result.success(CategoryTypeMapper.toCategoryTypeList(categoryTypeRepository.findAll()));
+        } catch (Exception e) {
+            return Result.error(e);
+        }
+    }
 }

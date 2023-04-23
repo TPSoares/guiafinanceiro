@@ -12,12 +12,14 @@ public class CategoryTypeOutputDto implements Serializable {
     private final String name;
     private final Date createdAt;
     private final Date updatedAt;
+    private final String description;
 
-    public CategoryTypeOutputDto(Long categoryTypeId, String name, Date createdAt, Date updatedAt) {
+    public CategoryTypeOutputDto(Long categoryTypeId, String name, Date createdAt, Date updatedAt, String description) {
         this.categoryTypeId = categoryTypeId;
         this.name = name;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.description = description;
     }
 
     public Long getCategoryTypeId() {
@@ -36,6 +38,10 @@ public class CategoryTypeOutputDto implements Serializable {
         return updatedAt;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -44,12 +50,13 @@ public class CategoryTypeOutputDto implements Serializable {
         return Objects.equals(this.categoryTypeId, entity.categoryTypeId) &&
                 Objects.equals(this.name, entity.name) &&
                 Objects.equals(this.createdAt, entity.createdAt) &&
+                Objects.equals(this.description, entity.description) &&
                 Objects.equals(this.updatedAt, entity.updatedAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(categoryTypeId, name, createdAt, updatedAt);
+        return Objects.hash(categoryTypeId, name, createdAt, description, updatedAt);
     }
 
     @Override
@@ -58,6 +65,7 @@ public class CategoryTypeOutputDto implements Serializable {
                 "categoryTypeId = " + categoryTypeId + ", " +
                 "name = " + name + ", " +
                 "createdAt = " + createdAt + ", " +
+                "description = " + description + ", " +
                 "updatedAt = " + updatedAt + ")";
     }
 
@@ -70,6 +78,7 @@ public class CategoryTypeOutputDto implements Serializable {
         private String name;
         private Date createdAt;
         private Date updatedAt;
+        private String description;
 
         private CategoryTypeOutputDtoBuilder() {
         }
@@ -94,8 +103,13 @@ public class CategoryTypeOutputDto implements Serializable {
             return this;
         }
 
+        public CategoryTypeOutputDtoBuilder description(String description) {
+            this.description = description;
+            return this;
+        }
+
         public CategoryTypeOutputDto build() {
-            return new CategoryTypeOutputDto(categoryTypeId, name, createdAt, updatedAt);
+            return new CategoryTypeOutputDto(categoryTypeId, name, createdAt, updatedAt, description);
         }
     }
 }

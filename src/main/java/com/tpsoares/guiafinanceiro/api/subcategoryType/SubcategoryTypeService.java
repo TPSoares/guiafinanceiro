@@ -1,15 +1,13 @@
 package com.tpsoares.guiafinanceiro.api.subcategoryType;
 
-import com.tpsoares.guiafinanceiro.api.enums.ErrorCodes;
-import com.tpsoares.guiafinanceiro.api.enums.ErrorMessages;
 import com.tpsoares.guiafinanceiro.api.exceptions.SubcategoryTypeNotFoundException;
+import com.tpsoares.guiafinanceiro.api.subcategoryType.dto.SubcategoryTypeOutputDto;
 import com.tpsoares.guiafinanceiro.api.transaction.Transaction;
 import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionInputDto;
 import com.tpsoares.guiafinanceiro.core.Result;
-import com.tpsoares.guiafinanceiro.utils.ResponseError;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,6 +37,14 @@ public class SubcategoryTypeService {
 
             return Result.success(transactionBuilder);
 
+        } catch (Exception e) {
+            return Result.error(e);
+        }
+    }
+
+    public Result<List<SubcategoryTypeOutputDto>, Exception> list() {
+        try {
+            return Result.success(SubcategoryTypeMapper.toSubcategoryTypeList(subcategoryTypeRepository.findAll()));
         } catch (Exception e) {
             return Result.error(e);
         }
