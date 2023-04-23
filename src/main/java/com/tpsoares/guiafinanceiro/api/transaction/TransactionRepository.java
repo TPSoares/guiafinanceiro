@@ -12,7 +12,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 //    TODO: Get all transactions by user
 
     Transaction findByTransactionIdAndEnabled(Long id, Boolean enabled);
-    List<Transaction> findByEnabled(Boolean enabled);
+    List<Transaction> findByEnabledOrderByTransactionDateDesc(Boolean enabled);
 
     @Query(
         value = "SELECT " +

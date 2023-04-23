@@ -35,7 +35,7 @@ public class TransactionService {
     public Result<List<TransactionOutputDto>, Exception> list() {
 
         try {
-            List<Transaction> transactionList = transactionRepository.findByEnabled(TRANSACTION_ENABLED);
+            List<Transaction> transactionList = transactionRepository.findByEnabledOrderByTransactionDateDesc(TRANSACTION_ENABLED);
 
             List<TransactionOutputDto> transactionOutputDtoList = TransactionMapper.toOutputDtoList(transactionList);
 

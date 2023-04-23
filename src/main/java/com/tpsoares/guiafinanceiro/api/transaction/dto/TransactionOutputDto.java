@@ -20,16 +20,18 @@ public class TransactionOutputDto implements Serializable {
     private final String transactionValue;
     private final Date createdAt;
     private final Date updatedAt;
+    private final Date transactionDate;
     private final User user;
     private final CategoryType categoryType;
     private final SubcategoryType subcategoryType;
 
-    public TransactionOutputDto(Long transactionId, String name, String transactionValue, Date createdAt, Date updatedAt, User user, CategoryType categoryType, SubcategoryType subcategoryType) {
+    public TransactionOutputDto(Long transactionId, String name, String transactionValue, Date createdAt, Date updatedAt, Date transactionDate, User user, CategoryType categoryType, SubcategoryType subcategoryType) {
         this.transactionId = transactionId;
         this.name = name;
         this.transactionValue = transactionValue;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.transactionDate = transactionDate;
         this.user = user;
         this.categoryType = categoryType;
         this.subcategoryType = subcategoryType;
@@ -55,6 +57,10 @@ public class TransactionOutputDto implements Serializable {
         return updatedAt;
     }
 
+    public Date getTransactionDate() {
+        return transactionDate;
+    }
+
     public User getUser() {
         return user;
     }
@@ -77,6 +83,7 @@ public class TransactionOutputDto implements Serializable {
                 Objects.equals(this.transactionValue, entity.transactionValue) &&
                 Objects.equals(this.createdAt, entity.createdAt) &&
                 Objects.equals(this.updatedAt, entity.updatedAt) &&
+                Objects.equals(this.transactionDate, entity.transactionDate) &&
                 Objects.equals(this.user, entity.user) &&
                 Objects.equals(this.categoryType, entity.categoryType) &&
                 Objects.equals(this.subcategoryType, entity.subcategoryType);
@@ -84,7 +91,7 @@ public class TransactionOutputDto implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(transactionId, name, transactionValue, createdAt, updatedAt, user, categoryType, subcategoryType);
+        return Objects.hash(transactionId, name, transactionValue, createdAt, updatedAt, transactionDate, user, categoryType, subcategoryType);
     }
 
     @Override
@@ -95,6 +102,7 @@ public class TransactionOutputDto implements Serializable {
                 "transactionValue = " + transactionValue + ", " +
                 "createdAt = " + createdAt + ", " +
                 "updatedAt = " + updatedAt + ")" +
+                "transactionDate = " + transactionDate + ")" +
                 "user = " + user + ", " +
                 "categoryType = " + categoryType + ", " +
                 "subcategoryType = " + subcategoryType + ")";
