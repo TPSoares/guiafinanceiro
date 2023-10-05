@@ -1,18 +1,11 @@
 package com.tpsoares.guiafinanceiro.api.transaction;
 
 import com.tpsoares.guiafinanceiro.api.categoryType.CategoryTypeUseCase;
-import com.tpsoares.guiafinanceiro.api.categoryType.dto.CategoryTypeRequest;
-import com.tpsoares.guiafinanceiro.api.categoryType.dto.CategoryTypeResponse;
 import com.tpsoares.guiafinanceiro.api.subcategoryType.SubcategoryTypeUseCase;
-import com.tpsoares.guiafinanceiro.api.subcategoryType.dto.SubcategoryTypeRequest;
-import com.tpsoares.guiafinanceiro.api.subcategoryType.dto.SubcategoryTypeResponse;
 import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionByMonthDto;
+import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionDto;
 import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionMonthlyBySubCategoryTypeDto;
-import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionRequest;
-import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionResponse;
 import com.tpsoares.guiafinanceiro.api.user.UserUseCase;
-import com.tpsoares.guiafinanceiro.api.user.dto.UserRequest;
-import com.tpsoares.guiafinanceiro.api.user.dto.UserResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,69 +21,33 @@ public class TransactionControllerImpl implements TransactionController {
     private final SubcategoryTypeUseCase subcategoryTypeUseCase;
 
     @Override
-    public List<TransactionResponse> list() {
+    public List<TransactionDto> list() {
         return transactionUseCase.list();
     }
 
     @Override
-    public TransactionResponse get(Long transactionId) {
+    public TransactionDto get(Long transactionId) {
         return transactionUseCase.get(transactionId);
     }
 
     @Override
-    public TransactionResponse create(TransactionRequest transactionRequest) {
-        UserResponse userResponse = userUseCase.getUser(transactionRequest.getUserId());
-        CategoryTypeResponse categoryTypeResponse = categoryTypeUseCase.getCategoryType(transactionRequest.getCategoryTypeId());
-        SubcategoryTypeResponse subcategoryTypeResponse = subcategoryTypeUseCase.getSubCategoryType(transactionRequest.getSubcategoryTypeId());
+    public TransactionDto create(TransactionDto transactionDto) {
+        userUseCase.getUser(transactionDto.getUser().getUserId());
+        categoryTypeUseCase.getCategoryType(transactionDto.getCategoryType().getCategoryTypeId());
+        subcategoryTypeUseCase.getSubCategoryType(transactionDto.getSubcategoryType().getSubcategoryTypeId());
 
-        UserRequest userRequest = UserRequest.builder()
-            .userId(userResponse.getUserId())
-            .email(userResponse.getEmail())
-            .name(userResponse.getName())
-            .build();
-
-        CategoryTypeRequest categoryTypeRequest = CategoryTypeRequest.builder()
-            .categoryTypeId(categoryTypeResponse.getCategoryTypeId())
-            .description(categoryTypeResponse.getDescription())
-            .name(categoryTypeResponse.getName())
-            .build();
-
-        SubcategoryTypeRequest subcategoryTypeRequest = SubcategoryTypeRequest.builder()
-            .subcategoryTypeId(subcategoryTypeResponse.getSubcategoryTypeId())
-            .description(subcategoryTypeResponse.getDescription())
-            .name(subcategoryTypeResponse.getName())
-            .build();
-
-
-        return transactionUseCase.createTransaction(transactionRequest, userRequest, categoryTypeRequest, subcategoryTypeRequest);
+        return transactionUseCase.createTransaction(transactionDto);
     }
 
     @Override
-    public TransactionResponse update(Long transactionId, TransactionRequest transactionRequest) {
+    public TransactionDto update(Long transactionId, TransactionDto transactionDto) {
 
         transactionUseCase.get(transactionId);
-        UserResponse userResponse = userUseCase.getUser(transactionRequest.getUserId());
-        CategoryTypeResponse categoryTypeResponse = categoryTypeUseCase.getCategoryType(transactionRequest.getCategoryTypeId());
-        SubcategoryTypeResponse subcategoryTypeResponse = subcategoryTypeUseCase.getSubCategoryType(transactionRequest.getSubcategoryTypeId());
+        userUseCase.getUser(transactionDto.getUser().getUserId());
+        categoryTypeUseCase.getCategoryType(transactionDto.getCategoryType().getCategoryTypeId());
+        subcategoryTypeUseCase.getSubCategoryType(transactionDto.getSubcategoryType().getSubcategoryTypeId());
 
-        UserRequest userRequest = UserRequest.builder()
-            .userId(userResponse.getUserId())
-            .email(userResponse.getEmail())
-            .name(userResponse.getName())
-            .build();
-
-        CategoryTypeRequest categoryTypeRequest = CategoryTypeRequest.builder()
-            .categoryTypeId(categoryTypeResponse.getCategoryTypeId())
-            .description(categoryTypeResponse.getDescription())
-            .name(categoryTypeResponse.getName())
-            .build();
-
-        SubcategoryTypeRequest subcategoryTypeRequest = SubcategoryTypeRequest.builder()
-            .subcategoryTypeId(subcategoryTypeResponse.getSubcategoryTypeId())
-            .description(subcategoryTypeResponse.getDescription())
-            .name(subcategoryTypeResponse.getName())
-            .build();
-        return transactionUseCase.updateTranasction(transactionId, transactionRequest, userRequest, categoryTypeRequest, subcategoryTypeRequest);
+        return transactionUseCase.updateTranasction(transactionId, transactionDto);
 
     }
 

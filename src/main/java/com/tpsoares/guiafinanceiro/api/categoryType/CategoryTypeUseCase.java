@@ -1,6 +1,6 @@
 package com.tpsoares.guiafinanceiro.api.categoryType;
 
-import com.tpsoares.guiafinanceiro.api.categoryType.dto.CategoryTypeResponse;
+import com.tpsoares.guiafinanceiro.api.categoryType.dto.CategoryTypeDto;
 import com.tpsoares.guiafinanceiro.api.exceptions.CategoryTypeNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +13,10 @@ public class CategoryTypeUseCase {
         this.categoryTypeRepository = categoryTypeRepository;
     }
 
-    public CategoryTypeResponse getCategoryType(Long categoryTypeId) {
-        return CategoryTypeMapper.toDomain(categoryTypeRepository.findById(categoryTypeId)
-            .orElseThrow(CategoryTypeNotFoundException::new));
+    public CategoryTypeDto getCategoryType(Long categoryTypeId) {
+        return categoryTypeRepository.findById(categoryTypeId)
+            .map(CategoryTypeMapper::toDomain)
+            .orElseThrow(CategoryTypeNotFoundException::new);
     }
 //
 //    public Result<List<CategoryTypeOutputDto>, Exception> list() {

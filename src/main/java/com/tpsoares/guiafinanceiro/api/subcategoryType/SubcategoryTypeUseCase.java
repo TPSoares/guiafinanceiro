@@ -1,7 +1,7 @@
 package com.tpsoares.guiafinanceiro.api.subcategoryType;
 
 import com.tpsoares.guiafinanceiro.api.exceptions.SubcategoryTypeNotFoundException;
-import com.tpsoares.guiafinanceiro.api.subcategoryType.dto.SubcategoryTypeResponse;
+import com.tpsoares.guiafinanceiro.api.subcategoryType.dto.SubcategoryTypeDto;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,9 +13,10 @@ public class SubcategoryTypeUseCase {
         this.subcategoryTypeRepository = subcategoryTypeRepository;
     }
 
-    public SubcategoryTypeResponse getSubCategoryType(Long subcategoryTypeId) {
-        return SubcategoryTypeMapper.toDomain(subcategoryTypeRepository.findById(subcategoryTypeId)
-            .orElseThrow(SubcategoryTypeNotFoundException::new));
+    public SubcategoryTypeDto getSubCategoryType(Long subcategoryTypeId) {
+        return subcategoryTypeRepository.findById(subcategoryTypeId)
+            .map(SubcategoryTypeMapper::toDomain)
+            .orElseThrow(SubcategoryTypeNotFoundException::new);
     }
 //
 //    public Result<List<SubcategoryTypeOutputDto>, Exception> list() {

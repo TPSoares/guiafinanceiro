@@ -1,20 +1,20 @@
 package com.tpsoares.guiafinanceiro.api.user;
 
 import com.tpsoares.guiafinanceiro.api.user.dto.UserRequest;
-import com.tpsoares.guiafinanceiro.api.user.dto.UserResponse;
+import com.tpsoares.guiafinanceiro.api.user.dto.UserDto;
 
 public class UserMapper {
 
-    public static User toEntity(UserRequest userRequest) {
+    public static User toEntity(UserDto userDto) {
         return User.builder()
-            .userId(userRequest.getUserId())
-            .email(userRequest.getEmail())
-            .name(userRequest.getName())
+            .userId(userDto.getUserId())
+            .email(userDto.getEmail())
+            .name(userDto.getName())
             .build();
     }
 
-    public static UserResponse toDomain(User user) {
-        return UserResponse.builder()
+    public static UserDto toDomain(User user) {
+        return UserDto.builder()
             .userId(user.getUserId())
             .email(user.getEmail())
             .name(user.getName())

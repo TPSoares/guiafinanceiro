@@ -1,10 +1,7 @@
 package com.tpsoares.guiafinanceiro.api.transaction;
 
-import com.tpsoares.guiafinanceiro.api.categoryType.dto.CategoryTypeRequest;
 import com.tpsoares.guiafinanceiro.api.exceptions.TransactionNotFoundException;
-import com.tpsoares.guiafinanceiro.api.subcategoryType.dto.SubcategoryTypeRequest;
-import com.tpsoares.guiafinanceiro.api.transaction.dto.*;
-import com.tpsoares.guiafinanceiro.api.user.dto.UserRequest;
+import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,21 +17,22 @@ public class TransactionUseCase {
         this.transactionRepository = transactionRepository;
     }
 
-    public List<TransactionResponse> list() {
+    public List<TransactionDto> list() {
         return TransactionMapper.toOutputDtoList(transactionRepository.findByEnabledOrderByTransactionDateDesc(TRANSACTION_ENABLED));
     }
 
-    public TransactionResponse get(Long transactionId) {
-        return TransactionMapper.toDomain(transactionRepository.findByTransactionIdAndEnabled(transactionId, TRANSACTION_ENABLED)
-            .orElseThrow(TransactionNotFoundException::new));
+    public TransactionDto get(Long transactionId) {
+        return transactionRepository.findByTransactionIdAndEnabled(transactionId, TRANSACTION_ENABLED)
+            .map(TransactionMapper::toDomain)
+            .orElseThrow(TransactionNotFoundException::new);
     }
 
-    public TransactionResponse createTransaction(TransactionRequest transactionRequest, UserRequest userRequest, CategoryTypeRequest categoryTypeRequest, SubcategoryTypeRequest subcategoryTypeRequest) {
-        return TransactionMapper.toDomain(transactionRepository.save(TransactionMapper.toEntitySave(transactionRequest, userRequest, categoryTypeRequest, subcategoryTypeRequest)));
+    public TransactionDto createTransaction(TransactionDto transactionDto) {
+        return TransactionMapper.toDomain(transactionRepository.save(TransactionMapper.toEntitySave(transactionDto)));
     }
 
-    public TransactionResponse updateTranasction(Long transactionId, TransactionRequest transactionRequest, UserRequest userRequest, CategoryTypeRequest categoryTypeRequest, SubcategoryTypeRequest subcategoryTypeRequest) {
-        return TransactionMapper.toDomain(transactionRepository.save(TransactionMapper.toEntityUpdate(transactionId, transactionRequest, userRequest, categoryTypeRequest, subcategoryTypeRequest)));
+    public TransactionDto updateTranasction(Long transactionId, TransactionDto transactionDto) {
+        return TransactionMapper.toDomain(transactionRepository.save(TransactionMapper.toEntityUpdate(transactionId, transactionDto)));
     }
 //
 //    public Result<Transaction.TransactionBuilder, Exception> checkInputDtoAndReturnBuilder(TransactionInputDto transactionInputDto) {

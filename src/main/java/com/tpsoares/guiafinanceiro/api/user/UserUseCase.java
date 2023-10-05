@@ -1,7 +1,7 @@
 package com.tpsoares.guiafinanceiro.api.user;
 
 import com.tpsoares.guiafinanceiro.api.exceptions.UserNotFoundException;
-import com.tpsoares.guiafinanceiro.api.user.dto.UserResponse;
+import com.tpsoares.guiafinanceiro.api.user.dto.UserDto;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,8 +13,9 @@ public class UserUseCase {
         this.userRepository = userRepository;
     }
 
-    public UserResponse getUser(Long userId) {
-        return UserMapper.toDomain(userRepository.findById(userId)
-            .orElseThrow(UserNotFoundException::new));
+    public UserDto getUser(Long userId) {
+        return userRepository.findById(userId)
+            .map(UserMapper::toDomain)
+            .orElseThrow(UserNotFoundException::new);
     }
 }

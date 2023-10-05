@@ -1,7 +1,7 @@
 package com.tpsoares.guiafinanceiro.api.categoryType;
 
 import com.tpsoares.guiafinanceiro.api.categoryType.dto.CategoryTypeRequest;
-import com.tpsoares.guiafinanceiro.api.categoryType.dto.CategoryTypeResponse;
+import com.tpsoares.guiafinanceiro.api.categoryType.dto.CategoryTypeDto;
 
 import java.util.List;
 
@@ -15,26 +15,26 @@ public class CategoryTypeMapper {
                 .build();
     }
 
-    public static CategoryType toEntity(CategoryTypeRequest categoryTypeRequest) {
+    public static CategoryType toEntity(CategoryTypeDto categoryTypeDto) {
         return CategoryType.builder()
-            .categoryTypeId(categoryTypeRequest.getCategoryTypeId())
-            .description(categoryTypeRequest.getDescription())
-            .name(categoryTypeRequest.getName())
+            .categoryTypeId(categoryTypeDto.getCategoryTypeId())
+            .description(categoryTypeDto.getDescription())
+            .name(categoryTypeDto.getName())
             .build();
     }
 
-    public static CategoryTypeResponse toDomain(CategoryType categoryType) {
-        return CategoryTypeResponse.builder()
+    public static CategoryTypeDto toDomain(CategoryType categoryType) {
+        return CategoryTypeDto.builder()
             .categoryTypeId(categoryType.getCategoryTypeId())
             .description(categoryType.getDescription())
             .name(categoryType.getName())
             .build();
     }
 
-    public static List<CategoryTypeResponse> toCategoryTypeList(List<CategoryType> categoryTypeList) {
+    public static List<CategoryTypeDto> toCategoryTypeList(List<CategoryType> categoryTypeList) {
         return categoryTypeList
             .stream()
-            .map(categoryType -> CategoryTypeResponse.builder()
+            .map(categoryType -> CategoryTypeDto.builder()
                 .categoryTypeId(categoryType.getCategoryTypeId())
                 .name(categoryType.getName())
                 .updatedAt(categoryType.getUpdatedAt())
