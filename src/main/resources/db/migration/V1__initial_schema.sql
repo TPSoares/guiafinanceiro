@@ -1,7 +1,7 @@
 CREATE TABLE `t_transaction` (
   `transaction_id` bigint PRIMARY KEY NOT NULL AUTO_INCREMENT,
   `name` varchar(255),
-  `transaction_value` decimal (6,2),
+  `transaction_value` decimal (10,2),
   `transaction_date` datetime,
   `category_type_id` bigint,
   `user_id` bigint,

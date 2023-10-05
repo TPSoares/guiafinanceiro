@@ -5,13 +5,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
 //    TODO: Get all transactions by user
 
-    Transaction findByTransactionIdAndEnabled(Long id, Boolean enabled);
+    Optional<Transaction> findByTransactionIdAndEnabled(Long id, Boolean enabled);
     List<Transaction> findByEnabledOrderByTransactionDateDesc(Boolean enabled);
 
     @Query(

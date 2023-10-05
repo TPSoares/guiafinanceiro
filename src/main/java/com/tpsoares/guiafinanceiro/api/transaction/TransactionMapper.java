@@ -1,14 +1,13 @@
 package com.tpsoares.guiafinanceiro.api.transaction;
 
 import com.tpsoares.guiafinanceiro.api.categoryType.CategoryTypeMapper;
+import com.tpsoares.guiafinanceiro.api.categoryType.dto.CategoryTypeRequest;
 import com.tpsoares.guiafinanceiro.api.subcategoryType.SubcategoryTypeMapper;
-import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionByMonthDto;
-import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionInputDto;
-import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionMonthlyBySubCategoryTypeDto;
-import com.tpsoares.guiafinanceiro.api.transaction.dto.TransactionOutputDto;
+import com.tpsoares.guiafinanceiro.api.subcategoryType.dto.SubcategoryTypeRequest;
+import com.tpsoares.guiafinanceiro.api.transaction.dto.*;
 import com.tpsoares.guiafinanceiro.api.user.UserMapper;
+import com.tpsoares.guiafinanceiro.api.user.dto.UserRequest;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -18,51 +17,81 @@ public class TransactionMapper {
 
     }
 
-    public static List<TransactionOutputDto> toOutputDtoList(List<Transaction> transactionList) {
+    public static List<TransactionResponse> toOutputDtoList(List<Transaction> transactionList) {
         return transactionList
                 .stream()
-                .map(transaction -> TransactionOutputDto.builder()
+                .map(transaction -> TransactionResponse.builder()
                         .transactionId(transaction.getTransactionId())
                         .name(transaction.getName())
                         .transactionValue(transaction.getTransactionValue())
                         .createdAt(transaction.getCreatedAt())
                         .updatedAt(transaction.getUpdatedAt())
                         .transactionDate(transaction.getTransactionDate())
-                        .user(UserMapper.toTransactionOutPutDto(transaction.getUser()))
-                        .categoryType(CategoryTypeMapper.toTransactionOutPutDto(transaction.getCategoryType()))
-                        .subcategoryType(SubcategoryTypeMapper.toTransactionOutPutDto(transaction.getSubcategoryType()))
+                        .user(UserMapper.toDomain(transaction.getUser()))
+                        .categoryType(CategoryTypeMapper.toDomain(transaction.getCategoryType()))
+                        .subcategoryType(SubcategoryTypeMapper.toDomain(transaction.getSubcategoryType()))
                         .build())
                 .toList();
     }
 
-    public static TransactionOutputDto toOutputDto(Transaction transaction) {
-        return TransactionOutputDto.builder()
+    public static TransactionResponse toDomain(Transaction transaction) {
+        return TransactionResponse.builder()
                 .transactionId(transaction.getTransactionId())
                 .name(transaction.getName())
                 .transactionValue(transaction.getTransactionValue())
                 .createdAt(transaction.getCreatedAt())
                 .updatedAt(transaction.getUpdatedAt())
                 .transactionDate(transaction.getTransactionDate())
-                .categoryType(transaction.getCategoryType())
-                .subcategoryType(transaction.getSubcategoryType())
-                .user(transaction.getUser())
+                .categoryType(CategoryTypeMapper.toDomain(transaction.getCategoryType()))
+                .subcategoryType(SubcategoryTypeMapper.toDomain(transaction.getSubcategoryType()))
+                .user(UserMapper.toDomain(transaction.getUser()))
                 .build();
     }
 
-    public static Transaction toEntity(Long transactionId, TransactionInputDto transactionInputDto) {
+    public static Transaction toEntitySave(TransactionRequest transactionRequest, UserRequest userRequest, CategoryTypeRequest categoryTypeRequest, SubcategoryTypeRequest subcategoryTypeRequest
+                                           ) {
         return Transaction.builder()
-                .transactionId(transactionId)
-                .name(transactionInputDto.getName())
-                .transactionDate(transactionInputDto.getTransactionDate())
-                .transactionValue(transactionInputDto.getTransactionValue())
+            .name(transactionRequest.getName())
+            .transactionDate(transactionRequest.getTransactionDate())
+            .transactionValue(transactionRequest.getTransactionValue())
+            .user(UserMapper.toEntity(userRequest))
+            .categoryType(CategoryTypeMapper.toEntity(categoryTypeRequest))
+            .subcategoryType(SubcategoryTypeMapper.toEntity(subcategoryTypeRequest))
+            .enabled(true)
+            .createdAt(new Date())
+            .updatedAt(new Date())
+            .build();
+    }
+
+    public static Transaction toEntityUpdate(Long transactionId, TransactionRequest transactionRequest, UserRequest userRequest, CategoryTypeRequest categoryTypeRequest, SubcategoryTypeRequest subcategoryTypeRequest) {
+        return Transaction.builder()
+            .transactionId(transactionId)
+            .name(transactionRequest.getName())
+            .transactionDate(transactionRequest.getTransactionDate())
+            .transactionValue(transactionRequest.getTransactionValue())
+            .user(UserMapper.toEntity(userRequest))
+            .categoryType(CategoryTypeMapper.toEntity(categoryTypeRequest))
+            .subcategoryType(SubcategoryTypeMapper.toEntity(subcategoryTypeRequest))
+            .enabled(true)
+            .createdAt(new Date())
+            .updatedAt(new Date())
+            .build();
+    }
+
+//    public static Transaction toEntityUpdate(Long transactionId, TransactionDto transactionDto) {
+//        return Transaction.builder()
+//                .transactionId(transactionId)
+//                .name(transactionDto.getName())
+//                .transactionDate(transactionDto.getTransactionDate())
+//                .transactionValue(transactionDto.getTransactionValue())
 //                .categoryType(transactionInputDto.getCategoryType())
 //                .subcategoryType(transactionInputDto.getSubcategoryType())
 //                .user(transactionInputDto.getUser())
-                .enabled(true)
-                .createdAt(new Date())
-                .updatedAt(new Date())
-                .build();
-    }
+//                .enabled(true)
+//                .createdAt(new Date())
+//                .updatedAt(new Date())
+//                .build();
+//    }
 
     public static List<TransactionByMonthDto> toTransactionByMonthDto(List<Object[]> result) {
         return result
@@ -85,13 +114,6 @@ public class TransactionMapper {
                 .toList();
     }
 
-    public static Transaction.TransactionBuilder inputMap(TransactionInputDto transactionInputDto) {
-        return Transaction.builder()
-                .name(transactionInputDto.getName())
-                .transactionDate(transactionInputDto.getTransactionDate())
-                .transactionValue(transactionInputDto.getTransactionValue())
-                .enabled(true)
-                .createdAt(new Date())
-                .updatedAt(new Date());
-    }
+
+
 }
