@@ -1,5 +1,6 @@
 package com.tpsoares.guiafinanceiro.api.categoryType;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +19,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "t_category_type")
 public class CategoryType {
     @Id
@@ -28,9 +30,15 @@ public class CategoryType {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "created_at")
     private Date createdAt;
 
     @Column(name = "updated_at")
     private Date updatedAt;
+
+    @Column(name = "enabled")
+    private Boolean enabled;
 }
