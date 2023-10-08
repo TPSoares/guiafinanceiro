@@ -1,8 +1,9 @@
 package com.tpsoares.guiafinanceiro.api.transaction;
 
-import com.tpsoares.guiafinanceiro.api.categoryType.CategoryType;
-import com.tpsoares.guiafinanceiro.api.subcategoryType.SubcategoryType;
-import com.tpsoares.guiafinanceiro.api.user.User;
+import com.tpsoares.guiafinanceiro.model.CategoryType;
+import com.tpsoares.guiafinanceiro.model.SubcategoryType;
+import com.tpsoares.guiafinanceiro.model.Transaction;
+import com.tpsoares.guiafinanceiro.model.User;
 
 import java.util.Arrays;
 import java.util.Date;
