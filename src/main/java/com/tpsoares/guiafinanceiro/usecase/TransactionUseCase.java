@@ -1,9 +1,9 @@
 package com.tpsoares.guiafinanceiro.usecase;
 
-import com.tpsoares.guiafinanceiro.mapper.TransactionMapper;
-import com.tpsoares.guiafinanceiro.repository.TransactionRepository;
-import com.tpsoares.guiafinanceiro.exceptions.TransactionNotFoundException;
 import com.tpsoares.guiafinanceiro.api.dto.TransactionDto;
+import com.tpsoares.guiafinanceiro.exceptions.TransactionNotFoundException;
+import com.tpsoares.guiafinanceiro.gateway.TransactionGateway;
+import com.tpsoares.guiafinanceiro.mapper.TransactionMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,29 +12,27 @@ import java.util.List;
 public class TransactionUseCase {
 
     private static final Boolean TRANSACTION_ENABLED = true;
+    private final TransactionGateway transactionGateway;
 
-    private final TransactionRepository transactionRepository;
-
-    public TransactionUseCase(TransactionRepository transactionRepository) {
-        this.transactionRepository = transactionRepository;
+    public TransactionUseCase(TransactionGateway transactionGateway) {
+        this.transactionGateway = transactionGateway;
     }
 
     public List<TransactionDto> list() {
-        return TransactionMapper.toOutputDtoList(transactionRepository.findByEnabledOrderByTransactionDateDesc(TRANSACTION_ENABLED));
+        return transactionGateway.findByEnabledOrderByTransactionDateDesc(TRANSACTION_ENABLED);
     }
 
     public TransactionDto get(Long transactionId) {
-        return transactionRepository.findByTransactionIdAndEnabled(transactionId, TRANSACTION_ENABLED)
-            .map(TransactionMapper::toDomain)
+        return transactionGateway.findByTransactionIdAndEnabled(transactionId, TRANSACTION_ENABLED)
             .orElseThrow(TransactionNotFoundException::new);
     }
 
     public TransactionDto createTransaction(TransactionDto transactionDto) {
-        return TransactionMapper.toDomain(transactionRepository.save(TransactionMapper.toEntitySave(transactionDto)));
+        return transactionGateway.create(transactionDto);
     }
 
     public TransactionDto updateTranasction(Long transactionId, TransactionDto transactionDto) {
-        return TransactionMapper.toDomain(transactionRepository.save(TransactionMapper.toEntityUpdate(transactionId, transactionDto)));
+        return transactionGateway.update(transactionId, transactionDto);
     }
 //
 //    public Result<Transaction.TransactionBuilder, Exception> checkInputDtoAndReturnBuilder(TransactionInputDto transactionInputDto) {
