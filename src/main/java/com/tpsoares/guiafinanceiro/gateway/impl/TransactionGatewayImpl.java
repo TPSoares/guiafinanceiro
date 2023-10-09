@@ -3,6 +3,7 @@ package com.tpsoares.guiafinanceiro.gateway.impl;
 import com.tpsoares.guiafinanceiro.api.dto.TransactionDto;
 import com.tpsoares.guiafinanceiro.gateway.TransactionGateway;
 import com.tpsoares.guiafinanceiro.mapper.TransactionMapper;
+import com.tpsoares.guiafinanceiro.model.Transaction;
 import com.tpsoares.guiafinanceiro.repository.TransactionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -28,13 +29,8 @@ public class TransactionGatewayImpl implements TransactionGateway {
     }
 
     @Override
-    public List<Object[]> findTransactionTotalByMonth() {
-        return null;
-    }
-
-    @Override
-    public List<Object[]> findMonthlyExpensesBySubCategoryType() {
-        return null;
+    public List<TransactionDto> findTransactionsFromCurrentMonth() {
+        return TransactionMapper.toOutputDtoList(transactionRepository.findTransactionsFromCurrentMonth());
     }
 
     @Override

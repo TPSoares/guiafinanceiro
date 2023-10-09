@@ -55,11 +55,11 @@ public class TransactionControllerImpl implements TransactionController {
 
     @Override
     public List<TransactionByMonthDto> findTransactionTotalByMonth() {
-        return null;
+        return transactionUseCase.findTransactionTotalByMonth();
     }
 
     @Override
     public List<TransactionMonthlyBySubCategoryTypeDto> findTransactionMonthlyBySubCategory() {
-        return null;
+        return transactionUseCase.findTransactionExpensesFromCurrentMonth();
     }
 }
