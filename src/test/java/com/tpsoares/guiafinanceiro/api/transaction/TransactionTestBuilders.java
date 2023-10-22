@@ -11,7 +11,6 @@ import java.util.List;
 
 public class TransactionTestBuilders {
 
-    //create transaction mocks from TransactionModel with fake values for tests
     public static Transaction createTransactionMock() {
         return Transaction.builder()
                 .transactionId(1L)
@@ -22,7 +21,6 @@ public class TransactionTestBuilders {
                 .build();
     }
 
-    //create a list of transactions with all fields from TransactionModel with fake values for tests
     public static List<Transaction> createTransactionListMock() {
         return Arrays.asList(
                 Transaction.builder()
@@ -31,8 +29,8 @@ public class TransactionTestBuilders {
                     .updatedAt(new Date())
                     .name("transactionName")
                     .user(createUserMock())
-                    .categoryType(TransactionType.builder()
-                            .categoryTypeId(1L)
+                    .transactionType(TransactionType.builder()
+                            .transactionTypeId(1L)
                             .name("categoryTypeName")
                             .build())
                     .subcategoryType(SubcategoryType.builder()
@@ -49,8 +47,8 @@ public class TransactionTestBuilders {
                     .updatedAt(new Date())
                     .name("transactionName")
                     .user(createUserMock())
-                    .categoryType(TransactionType.builder()
-                        .categoryTypeId(1L)
+                    .transactionType(TransactionType.builder()
+                        .transactionTypeId(1L)
                         .name("categoryTypeName")
                         .build())
                     .subcategoryType(SubcategoryType.builder()
