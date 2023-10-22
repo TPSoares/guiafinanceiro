@@ -57,11 +57,11 @@ public class TransactionUseCase {
                 List<TransactionDto> transactions = entry.getValue();
                 String monthDate = entry.getKey();
                 BigDecimal monthlyExpense = transactions.stream()
-                    .filter(transaction -> transaction.getCategoryType().getCategoryTypeId() == 2)
+                    .filter(transaction -> transaction.getTransactionType().getTransactionTypeId() == 2)
                     .map(transaction -> new BigDecimal(transaction.getTransactionValue()))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
                 BigDecimal monthlyIncome = transactions.stream()
-                    .filter(transaction -> transaction.getCategoryType().getCategoryTypeId() == 1)
+                    .filter(transaction -> transaction.getTransactionType().getTransactionTypeId() == 1)
                     .map(transaction -> new BigDecimal(transaction.getTransactionValue()))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 

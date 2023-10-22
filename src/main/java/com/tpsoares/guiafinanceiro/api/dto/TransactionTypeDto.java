@@ -12,8 +12,8 @@ import java.util.Date;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 
-public class CategoryTypeDto {
-    private final Long categoryTypeId;
+public class TransactionTypeDto {
+    private final Long transactionTypeId;
     private final String name;
     private final Date createdAt;
     private final Date updatedAt;

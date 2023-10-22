@@ -1,6 +1,6 @@
 package com.tpsoares.guiafinanceiro.api.controller.impl;
 
-import com.tpsoares.guiafinanceiro.usecase.CategoryTypeUseCase;
+import com.tpsoares.guiafinanceiro.usecase.TransactionTypeUseCase;
 import com.tpsoares.guiafinanceiro.api.controller.TransactionController;
 import com.tpsoares.guiafinanceiro.usecase.SubcategoryTypeUseCase;
 import com.tpsoares.guiafinanceiro.usecase.TransactionUseCase;
@@ -19,7 +19,7 @@ public class TransactionControllerImpl implements TransactionController {
 
     private final TransactionUseCase transactionUseCase;
     private final UserUseCase userUseCase;
-    private final CategoryTypeUseCase categoryTypeUseCase;
+    private final TransactionTypeUseCase transactionTypeUseCase;
     private final SubcategoryTypeUseCase subcategoryTypeUseCase;
 
     @Override
@@ -35,7 +35,7 @@ public class TransactionControllerImpl implements TransactionController {
     @Override
     public TransactionDto create(TransactionDto transactionDto) {
         userUseCase.getUser(transactionDto.getUser().getUserId());
-        categoryTypeUseCase.getCategoryType(transactionDto.getCategoryType().getCategoryTypeId());
+        transactionTypeUseCase.getTransactionType(transactionDto.getTransactionType().getTransactionTypeId());
         subcategoryTypeUseCase.getSubCategoryType(transactionDto.getSubcategoryType().getSubcategoryTypeId());
 
         return transactionUseCase.createTransaction(transactionDto);
@@ -46,7 +46,7 @@ public class TransactionControllerImpl implements TransactionController {
 
         transactionUseCase.get(transactionId);
         userUseCase.getUser(transactionDto.getUser().getUserId());
-        categoryTypeUseCase.getCategoryType(transactionDto.getCategoryType().getCategoryTypeId());
+        transactionTypeUseCase.getTransactionType(transactionDto.getTransactionType().getTransactionTypeId());
         subcategoryTypeUseCase.getSubCategoryType(transactionDto.getSubcategoryType().getSubcategoryTypeId());
 
         return transactionUseCase.updateTranasction(transactionId, transactionDto);

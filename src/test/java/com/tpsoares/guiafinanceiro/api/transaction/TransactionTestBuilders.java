@@ -1,6 +1,6 @@
 package com.tpsoares.guiafinanceiro.api.transaction;
 
-import com.tpsoares.guiafinanceiro.model.CategoryType;
+import com.tpsoares.guiafinanceiro.model.TransactionType;
 import com.tpsoares.guiafinanceiro.model.SubcategoryType;
 import com.tpsoares.guiafinanceiro.model.Transaction;
 import com.tpsoares.guiafinanceiro.model.User;
@@ -31,7 +31,7 @@ public class TransactionTestBuilders {
                     .updatedAt(new Date())
                     .name("transactionName")
                     .user(createUserMock())
-                    .categoryType(CategoryType.builder()
+                    .categoryType(TransactionType.builder()
                             .categoryTypeId(1L)
                             .name("categoryTypeName")
                             .build())
@@ -49,7 +49,7 @@ public class TransactionTestBuilders {
                     .updatedAt(new Date())
                     .name("transactionName")
                     .user(createUserMock())
-                    .categoryType(CategoryType.builder()
+                    .categoryType(TransactionType.builder()
                         .categoryTypeId(1L)
                         .name("categoryTypeName")
                         .build())

@@ -20,6 +20,6 @@ public class TransactionDto {
     private final Date updatedAt;
     private final Date transactionDate;
     private final UserDto user;
-    private final CategoryTypeDto categoryType;
+    private final TransactionTypeDto transactionType;
     private final SubcategoryTypeDto subcategoryType;
 }

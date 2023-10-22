@@ -21,11 +21,11 @@ import java.util.Date;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name = "t_category_type")
-public class CategoryType {
+public class TransactionType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_type_id", nullable = false)
-    private Long categoryTypeId;
+    @Column(name = "transaction_type_id", nullable = false)
+    private Long transactionTypeId;
 
     @Column(name = "name")
     private String name;

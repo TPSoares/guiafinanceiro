@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.Date;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class CategoryTypeNotFoundException extends ApiKnownException {
+public class TransactionTypeNotFoundException extends ApiKnownException {
 
-    public CategoryTypeNotFoundException() {
+    public TransactionTypeNotFoundException() {
         super(HttpStatus.NOT_FOUND, ErrorCodes.CATEGORY_TYPE_NOT_FOUND.getValue(), ErrorMessages.CATEGORY_TYPE_NOT_FOUND.getValue(), new Date(), null);
     }
 }
