@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 @Data
 @AllArgsConstructor
-public class TransactionMonthlyBySubCategoryTypeDto {
+public class TransactionMonthlyByCategoryTypeDto {
     private String monthlyExpense;
-    private String subcategoryType;
+    private String categoryType;
 }

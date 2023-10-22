@@ -16,6 +16,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     Optional<Transaction> findByTransactionIdAndEnabled(Long id, Boolean enabled);
     List<Transaction> findByEnabledOrderByTransactionDateDesc(Boolean enabled);
 
-    @Query("SELECT t FROM Transaction t WHERE MONTH(t.transactionDate) = MONTH(CURRENT_DATE) AND t.categoryType.categoryTypeId = 2")
+    @Query("SELECT t FROM Transaction t WHERE MONTH(t.transactionDate) = MONTH(CURRENT_DATE) AND t.transactionType.transactionTypeId = 2")
     List<Transaction> findTransactionsFromCurrentMonth();
 }

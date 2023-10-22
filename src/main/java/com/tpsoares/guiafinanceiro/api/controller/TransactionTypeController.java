@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-@RequestMapping("api/category-types")
+@RequestMapping("api/transaction-types")
 public interface TransactionTypeController {
 
     @GetMapping

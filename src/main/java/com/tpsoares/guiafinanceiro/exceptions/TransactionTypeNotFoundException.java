@@ -11,6 +11,6 @@ import java.util.Date;
 public class TransactionTypeNotFoundException extends ApiKnownException {
 
     public TransactionTypeNotFoundException() {
-        super(HttpStatus.NOT_FOUND, ErrorCodes.CATEGORY_TYPE_NOT_FOUND.getValue(), ErrorMessages.CATEGORY_TYPE_NOT_FOUND.getValue(), new Date(), null);
+        super(HttpStatus.NOT_FOUND, ErrorCodes.TRANSACTION_TYPE_NOT_FOUND.getValue(), ErrorMessages.TRANSACTION_TYPE_NOT_FOUND.getValue(), new Date(), null);
     }
 }

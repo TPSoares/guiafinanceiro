@@ -21,5 +21,5 @@ public class TransactionDto {
     private final Date transactionDate;
     private final UserDto user;
     private final TransactionTypeDto transactionType;
-    private final SubcategoryTypeDto subcategoryType;
+    private final CategoryTypeDto categoryType;
 }

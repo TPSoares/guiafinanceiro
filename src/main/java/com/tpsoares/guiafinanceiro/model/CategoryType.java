@@ -20,12 +20,12 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Table(name = "t_subcategory_type")
-public class SubcategoryType {
+@Table(name = "t_category_type")
+public class CategoryType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "subcategory_type_id", nullable = false)
-    private Long subcategoryTypeId;
+    @Column(name = "category_type_id", nullable = false)
+    private Long categoryTypeId;
 
     @Column(name = "name")
     private String name;

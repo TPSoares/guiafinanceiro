@@ -2,7 +2,7 @@ package com.tpsoares.guiafinanceiro.api.controller;
 
 import com.tpsoares.guiafinanceiro.api.dto.TransactionByMonthDto;
 import com.tpsoares.guiafinanceiro.api.dto.TransactionDto;
-import com.tpsoares.guiafinanceiro.api.dto.TransactionMonthlyBySubCategoryTypeDto;
+import com.tpsoares.guiafinanceiro.api.dto.TransactionMonthlyByCategoryTypeDto;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +25,6 @@ public interface TransactionController {
     @GetMapping("/monthly")
     List<TransactionByMonthDto> findTransactionTotalByMonth();
 
-    @GetMapping("/monthly-by-subcategory")
-    List<TransactionMonthlyBySubCategoryTypeDto> findTransactionMonthlyBySubCategory();
+    @GetMapping("/monthly-by-category")
+    List<TransactionMonthlyByCategoryTypeDto> findTransactionMonthlyByCategory();
 }

@@ -39,8 +39,8 @@ public class Transaction {
     private TransactionType transactionType;
 
     @OneToOne
-    @JoinColumn(name = "subcategory_type_id")
-    private SubcategoryType subcategoryType;
+    @JoinColumn(name = "category_type_id")
+    private CategoryType categoryType;
 
     @Column(name = "name")
     private String name;
