@@ -11,8 +11,9 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SubcategoryTypeDto {
-    private final Long subcategoryTypeId;
+
+public class TransactionTypeDto {
+    private final Long transactionTypeId;
     private final String name;
     private final Date createdAt;
     private final Date updatedAt;

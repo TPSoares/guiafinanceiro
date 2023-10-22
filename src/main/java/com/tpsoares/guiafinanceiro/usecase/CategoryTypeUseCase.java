@@ -2,14 +2,14 @@ package com.tpsoares.guiafinanceiro.usecase;
 
 import com.tpsoares.guiafinanceiro.mapper.CategoryTypeMapper;
 import com.tpsoares.guiafinanceiro.repository.CategoryTypeRepository;
-import com.tpsoares.guiafinanceiro.api.dto.CategoryTypeDto;
 import com.tpsoares.guiafinanceiro.exceptions.CategoryTypeNotFoundException;
+import com.tpsoares.guiafinanceiro.api.dto.CategoryTypeDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CategoryTypeUseCase {
 
-    CategoryTypeRepository categoryTypeRepository;
+    private final CategoryTypeRepository categoryTypeRepository;
 
     public CategoryTypeUseCase(CategoryTypeRepository categoryTypeRepository) {
         this.categoryTypeRepository = categoryTypeRepository;
@@ -20,13 +20,4 @@ public class CategoryTypeUseCase {
             .map(CategoryTypeMapper::toDomain)
             .orElseThrow(CategoryTypeNotFoundException::new);
     }
-//
-//    public Result<List<CategoryTypeOutputDto>, Exception> list() {
-//
-//        try {
-//            return Result.success(CategoryTypeMapper.toCategoryTypeList(categoryTypeRepository.findAll()));
-//        } catch (Exception e) {
-//            return Result.error(e);
-//        }
-//    }
 }

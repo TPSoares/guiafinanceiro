@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.Date;
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class SubcategoryTypeNotFoundException extends ApiKnownException {
+public class TransactionTypeNotFoundException extends ApiKnownException {
 
-    public SubcategoryTypeNotFoundException() {
-        super(HttpStatus.NOT_FOUND, ErrorCodes.SUBCATEGORY_TYPE_NOT_FOUND.getValue(), ErrorMessages.SUBCATEGORY_TYPE_NOT_FOUND.getValue(), new Date(), null);
+    public TransactionTypeNotFoundException() {
+        super(HttpStatus.NOT_FOUND, ErrorCodes.TRANSACTION_TYPE_NOT_FOUND.getValue(), ErrorMessages.TRANSACTION_TYPE_NOT_FOUND.getValue(), new Date(), null);
     }
 }

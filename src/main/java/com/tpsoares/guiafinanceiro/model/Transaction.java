@@ -35,12 +35,12 @@ public class Transaction {
     private User user;
 
     @OneToOne
-    @JoinColumn(name = "category_type_id")
-    private CategoryType categoryType;
+    @JoinColumn(name = "transaction_type_id")
+    private TransactionType transactionType;
 
     @OneToOne
-    @JoinColumn(name = "subcategory_type_id")
-    private SubcategoryType subcategoryType;
+    @JoinColumn(name = "category_type_id")
+    private CategoryType categoryType;
 
     @Column(name = "name")
     private String name;

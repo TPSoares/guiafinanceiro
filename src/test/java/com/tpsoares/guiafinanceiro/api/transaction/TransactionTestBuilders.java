@@ -1,7 +1,7 @@
 package com.tpsoares.guiafinanceiro.api.transaction;
 
+import com.tpsoares.guiafinanceiro.model.TransactionType;
 import com.tpsoares.guiafinanceiro.model.CategoryType;
-import com.tpsoares.guiafinanceiro.model.SubcategoryType;
 import com.tpsoares.guiafinanceiro.model.Transaction;
 import com.tpsoares.guiafinanceiro.model.User;
 
@@ -11,18 +11,16 @@ import java.util.List;
 
 public class TransactionTestBuilders {
 
-    //create transaction mocks from TransactionModel with fake values for tests
     public static Transaction createTransactionMock() {
         return Transaction.builder()
                 .transactionId(1L)
-                .subcategoryType(SubcategoryType.builder()
-                        .subcategoryTypeId(1L)
-                        .name("subcategoryTypeName")
+                .categoryType(CategoryType.builder()
+                        .categoryTypeId(1L)
+                        .name("categoryTypeName")
                         .build())
                 .build();
     }
 
-    //create a list of transactions with all fields from TransactionModel with fake values for tests
     public static List<Transaction> createTransactionListMock() {
         return Arrays.asList(
                 Transaction.builder()
@@ -31,13 +29,13 @@ public class TransactionTestBuilders {
                     .updatedAt(new Date())
                     .name("transactionName")
                     .user(createUserMock())
+                    .transactionType(TransactionType.builder()
+                            .transactionTypeId(1L)
+                            .name("categoryTypeName")
+                            .build())
                     .categoryType(CategoryType.builder()
                             .categoryTypeId(1L)
                             .name("categoryTypeName")
-                            .build())
-                    .subcategoryType(SubcategoryType.builder()
-                            .subcategoryTypeId(1L)
-                            .name("subcategoryTypeName")
                             .build())
                     .enabled(true)
                     .transactionDate(new Date())
@@ -49,13 +47,13 @@ public class TransactionTestBuilders {
                     .updatedAt(new Date())
                     .name("transactionName")
                     .user(createUserMock())
+                    .transactionType(TransactionType.builder()
+                        .transactionTypeId(1L)
+                        .name("categoryTypeName")
+                        .build())
                     .categoryType(CategoryType.builder()
                         .categoryTypeId(1L)
                         .name("categoryTypeName")
-                        .build())
-                    .subcategoryType(SubcategoryType.builder()
-                        .subcategoryTypeId(1L)
-                        .name("subcategoryTypeName")
                         .build())
                     .enabled(true)
                     .transactionDate(new Date())

@@ -2,7 +2,7 @@ package com.tpsoares.guiafinanceiro.mapper;
 
 import com.tpsoares.guiafinanceiro.api.dto.TransactionByMonthDto;
 import com.tpsoares.guiafinanceiro.api.dto.TransactionDto;
-import com.tpsoares.guiafinanceiro.api.dto.TransactionMonthlyBySubCategoryTypeDto;
+import com.tpsoares.guiafinanceiro.api.dto.TransactionMonthlyByCategoryTypeDto;
 import com.tpsoares.guiafinanceiro.model.Transaction;
 
 import java.util.Date;
@@ -25,8 +25,8 @@ public class TransactionMapper {
                         .updatedAt(transaction.getUpdatedAt())
                         .transactionDate(transaction.getTransactionDate())
                         .user(UserMapper.toDomain(transaction.getUser()))
+                        .transactionType(TransactionTypeMapper.toDomain(transaction.getTransactionType()))
                         .categoryType(CategoryTypeMapper.toDomain(transaction.getCategoryType()))
-                        .subcategoryType(SubcategoryTypeMapper.toDomain(transaction.getSubcategoryType()))
                         .build())
                 .toList();
     }
@@ -39,8 +39,8 @@ public class TransactionMapper {
                 .createdAt(transaction.getCreatedAt())
                 .updatedAt(transaction.getUpdatedAt())
                 .transactionDate(transaction.getTransactionDate())
+                .transactionType(TransactionTypeMapper.toDomain(transaction.getTransactionType()))
                 .categoryType(CategoryTypeMapper.toDomain(transaction.getCategoryType()))
-                .subcategoryType(SubcategoryTypeMapper.toDomain(transaction.getSubcategoryType()))
                 .user(UserMapper.toDomain(transaction.getUser()))
                 .build();
     }
@@ -51,8 +51,8 @@ public class TransactionMapper {
             .transactionDate(transactionDto.getTransactionDate())
             .transactionValue(transactionDto.getTransactionValue())
             .user(UserMapper.toEntity(transactionDto.getUser()))
+            .transactionType(TransactionTypeMapper.toEntity(transactionDto.getTransactionType()))
             .categoryType(CategoryTypeMapper.toEntity(transactionDto.getCategoryType()))
-            .subcategoryType(SubcategoryTypeMapper.toEntity(transactionDto.getSubcategoryType()))
             .enabled(true)
             .createdAt(new Date())
             .updatedAt(new Date())
@@ -66,50 +66,11 @@ public class TransactionMapper {
             .transactionDate(transactionDto.getTransactionDate())
             .transactionValue(transactionDto.getTransactionValue())
             .user(UserMapper.toEntity(transactionDto.getUser()))
+            .transactionType(TransactionTypeMapper.toEntity(transactionDto.getTransactionType()))
             .categoryType(CategoryTypeMapper.toEntity(transactionDto.getCategoryType()))
-            .subcategoryType(SubcategoryTypeMapper.toEntity(transactionDto.getSubcategoryType()))
             .enabled(true)
             .createdAt(new Date())
             .updatedAt(new Date())
             .build();
     }
-
-//    public static Transaction toEntityUpdate(Long transactionId, TransactionDto transactionDto) {
-//        return Transaction.builder()
-//                .transactionId(transactionId)
-//                .name(transactionDto.getName())
-//                .transactionDate(transactionDto.getTransactionDate())
-//                .transactionValue(transactionDto.getTransactionValue())
-//                .categoryType(transactionInputDto.getCategoryType())
-//                .subcategoryType(transactionInputDto.getSubcategoryType())
-//                .user(transactionInputDto.getUser())
-//                .enabled(true)
-//                .createdAt(new Date())
-//                .updatedAt(new Date())
-//                .build();
-//    }
-
-    public static List<TransactionByMonthDto> toTransactionByMonthDto(List<Object[]> result) {
-        return result
-                .stream()
-                .map(transaction -> TransactionByMonthDto.builder()
-                    .monthlyExpense(transaction[0].toString())
-                    .monthlyIncome(transaction[1].toString())
-                    .monthDate(transaction[2].toString())
-                    .build())
-                .toList();
-    }
-
-    public static List<TransactionMonthlyBySubCategoryTypeDto> toTransactionMonthlyBySubCategoryTypeDto(List<Object[]> result) {
-        return result
-                .stream()
-                .map(transaction -> TransactionMonthlyBySubCategoryTypeDto.builder()
-                        .monthlyExpense(transaction[0].toString())
-                        .subcategoryType(transaction[1].toString())
-                        .build())
-                .toList();
-    }
-
-
-
 }

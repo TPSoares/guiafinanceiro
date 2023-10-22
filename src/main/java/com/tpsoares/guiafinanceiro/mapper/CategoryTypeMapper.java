@@ -37,8 +37,8 @@ public class CategoryTypeMapper {
             .map(categoryType -> CategoryTypeDto.builder()
                 .categoryTypeId(categoryType.getCategoryTypeId())
                 .name(categoryType.getName())
-                .updatedAt(categoryType.getUpdatedAt())
                 .createdAt(categoryType.getCreatedAt())
+                .updatedAt(categoryType.getUpdatedAt())
                 .description(categoryType.getDescription())
                 .build())
             .toList();

@@ -20,12 +20,12 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Table(name = "t_subcategory_type")
-public class SubcategoryType {
+@Table(name = "t_transaction_type")
+public class TransactionType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "subcategory_type_id", nullable = false)
-    private Long subcategoryTypeId;
+    @Column(name = "transaction_type_id", nullable = false)
+    private Long transactionTypeId;
 
     @Column(name = "name")
     private String name;

@@ -11,7 +11,6 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-
 public class CategoryTypeDto {
     private final Long categoryTypeId;
     private final String name;

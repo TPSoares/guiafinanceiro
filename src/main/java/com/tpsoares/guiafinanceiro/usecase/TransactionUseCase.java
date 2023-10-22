@@ -2,10 +2,9 @@ package com.tpsoares.guiafinanceiro.usecase;
 
 import com.tpsoares.guiafinanceiro.api.dto.TransactionByMonthDto;
 import com.tpsoares.guiafinanceiro.api.dto.TransactionDto;
-import com.tpsoares.guiafinanceiro.api.dto.TransactionMonthlyBySubCategoryTypeDto;
+import com.tpsoares.guiafinanceiro.api.dto.TransactionMonthlyByCategoryTypeDto;
 import com.tpsoares.guiafinanceiro.exceptions.TransactionNotFoundException;
 import com.tpsoares.guiafinanceiro.gateway.TransactionGateway;
-import com.tpsoares.guiafinanceiro.mapper.TransactionMapper;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -57,11 +56,11 @@ public class TransactionUseCase {
                 List<TransactionDto> transactions = entry.getValue();
                 String monthDate = entry.getKey();
                 BigDecimal monthlyExpense = transactions.stream()
-                    .filter(transaction -> transaction.getCategoryType().getCategoryTypeId() == 2)
+                    .filter(transaction -> transaction.getTransactionType().getTransactionTypeId() == 2)
                     .map(transaction -> new BigDecimal(transaction.getTransactionValue()))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
                 BigDecimal monthlyIncome = transactions.stream()
-                    .filter(transaction -> transaction.getCategoryType().getCategoryTypeId() == 1)
+                    .filter(transaction -> transaction.getTransactionType().getTransactionTypeId() == 1)
                     .map(transaction -> new BigDecimal(transaction.getTransactionValue()))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
@@ -74,24 +73,24 @@ public class TransactionUseCase {
             .collect(Collectors.toList());
     }
 
-    public List<TransactionMonthlyBySubCategoryTypeDto> findTransactionExpensesFromCurrentMonth() {
+    public List<TransactionMonthlyByCategoryTypeDto> findTransactionExpensesFromCurrentMonth() {
         List<TransactionDto> transactionDtoList = transactionGateway.findTransactionsFromCurrentMonth();
 
-        Map<String, List<TransactionDto>> groupedBySubcategoryType = transactionDtoList.stream()
-            .collect(Collectors.groupingBy(transaction -> transaction.getSubcategoryType().getDescription()));
+        Map<String, List<TransactionDto>> groupedByCategoryType = transactionDtoList.stream()
+            .collect(Collectors.groupingBy(transaction -> transaction.getCategoryType().getDescription()));
 
-        return groupedBySubcategoryType.entrySet().stream()
+        return groupedByCategoryType.entrySet().stream()
             .map(entry -> {
                 List<TransactionDto> transactions = entry.getValue();
-                String subcategoryType = entry.getKey();
+                String categoryType = entry.getKey();
                 BigDecimal monthlyExpense = transactions.stream()
-                    .filter(transaction -> Objects.equals(transaction.getSubcategoryType().getDescription(), subcategoryType))
+                    .filter(transaction -> Objects.equals(transaction.getCategoryType().getDescription(), categoryType))
                     .map(transaction -> new BigDecimal(transaction.getTransactionValue()))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-                return TransactionMonthlyBySubCategoryTypeDto.builder()
+                return TransactionMonthlyByCategoryTypeDto.builder()
                     .monthlyExpense(monthlyExpense.toString())
-                    .subcategoryType(subcategoryType)
+                    .categoryType(categoryType)
                     .build();
             })
             .collect(Collectors.toList());
