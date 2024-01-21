@@ -4,3 +4,16 @@ spring:
         platform: mysql
         url: jdbc:mysql://localhost:${MYSQL_PORT}/${MYSQL_DATABASE}
         username: ${MYSQL_USER}
+    security:
+        oauth2:
+            resourceserver:
+                opaque-token:
+                    introspection-uri: "http://localhost:8081/oauth2/introspect"
+                    client-id: "guia-financeiro-backend"
+                    client-secret: "backend123"
+#logging:
+#    level:
+#        org:
+#            springframework: DEBUG
+
+

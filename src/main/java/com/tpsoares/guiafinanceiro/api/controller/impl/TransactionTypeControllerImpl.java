@@ -16,6 +16,6 @@ public class TransactionTypeControllerImpl implements TransactionTypeController 
 
     @Override
     public List<TransactionTypeDto> list() {
-        return null;
+        return transactionTypeUseCase.list();
     }
 }

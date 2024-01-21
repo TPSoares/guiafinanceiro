@@ -16,6 +16,6 @@ public class CategoryTypeControllerImpl implements CategoryController {
 
     @Override
     public List<CategoryTypeDto> list() {
-        return null;
+        return categoryTypeUseCase.list();
     }
 }
